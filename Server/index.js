@@ -1,4 +1,4 @@
-import express from "express"
+import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -18,20 +18,13 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+// app.use(bodyParser.json({ limit: "30mb", extended: true }));
+// app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
+// app.use("/admin", admins);
+// app.use("/home", homeilan);
 
-app.use("/admin", admins);
-app.use("/home", homeilan);
-
-
-
-
-
-const PORT = process.env.PORT || 3000;
-
-
+const PORT = process.env.PORT || 5000;
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -40,7 +33,7 @@ mongoose
   })
   .then(() => {
     app.listen(PORT, () =>
-      console.log("Server çalışıyor: http://localhost:3000")
+      console.log("Server çalışıyor: http://localhost:3001")
     );
   })
   .catch((error) => console.log(error));
