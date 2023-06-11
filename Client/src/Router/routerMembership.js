@@ -22,9 +22,9 @@ const RouterMembership = () => {
             </MembershipAuth>
           }
         >
-          <Route path="ogrenci/login" element={<LoginStudent />} />
-          <Route path="akademik/login" element={<LoginTeacher />} />
-          <Route path="akademik/signup" element={<SignUpTeacher />} />
+          <Route path="student/login" element={<LoginStudent />} />
+          <Route path="teacher/login" element={<LoginTeacher />} />
+          <Route path="teacher/signup" element={<SignUpTeacher />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

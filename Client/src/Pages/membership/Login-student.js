@@ -4,6 +4,7 @@ import { Input, Button, Form } from "antd";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../store/userInformation";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const LoginStudent = () => {
   const [form] = Form.useForm();
@@ -25,7 +26,7 @@ const LoginStudent = () => {
 
   const handleLogin = (values) => {
     axios
-      .post("/api/login", values)
+      .post("http://localhost:3001/auth/student/login", values)
       .then((response) => {
         console.log(response.data);
         // Giriş başarılı olduğunda yönlendirme yapabilirsiniz.
@@ -38,128 +39,133 @@ const LoginStudent = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundImage: `url(https://e-okul.meb.gov.tr/theme/able/assets/images/bg.jpg)`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <Link
-        to="/"
-        onMouseEnter={() => toggleReturnText(true)}
-        onMouseLeave={() => toggleReturnText(false)}
-      >
-        <div style={{ position: "relative" }}>
-          <img
-            src="https://e-okul.meb.gov.tr/theme/able/assets/images/eokullogo.png"
-            alt="Meb Logo"
-            style={{ width: "300px", marginBottom: "20px" }}
-          />
-          {showReturnText && (
-            <span
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                color: "white",
-                background: "rgba(0, 0, 0, 0.6)",
-                padding: "5px",
-                borderRadius: "4px",
-                fontSize: "14px",
-              }}
-            >
-              Ana Sayfaya Dön
-            </span>
-          )}
-        </div>
-      </Link>
-      <h2 style={{ color: "#fff" }}>Veli Giriş Sayfası</h2>
-      <Form
-        form={form}
-        onFinish={handleLogin}
+    <>
+      <Helmet>
+        <title>Öğrenci Giriş</title>
+      </Helmet>
+      <div
         style={{
-          width: "400px",
-          border: "1px solid #ddd",
-          padding: "20px",
-          borderRadius: "5px",
-          backgroundColor: "#fff",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundImage: `url(https://e-okul.meb.gov.tr/theme/able/assets/images/bg.jpg)`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
         }}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
       >
-        <div
+        <Link
+          to="/"
+          onMouseEnter={() => toggleReturnText(true)}
+          onMouseLeave={() => toggleReturnText(false)}
+        >
+          <div style={{ position: "relative" }}>
+            <img
+              src="https://e-okul.meb.gov.tr/theme/able/assets/images/eokullogo.png"
+              alt="Meb Logo"
+              style={{ width: "300px", marginBottom: "20px" }}
+            />
+            {showReturnText && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  color: "white",
+                  background: "rgba(0, 0, 0, 0.6)",
+                  padding: "5px",
+                  borderRadius: "4px",
+                  fontSize: "14px",
+                }}
+              >
+                Ana Sayfaya Dön
+              </span>
+            )}
+          </div>
+        </Link>
+        <h2 style={{ color: "#fff" }}>Veli Giriş Sayfası</h2>
+        <Form
+          form={form}
+          onFinish={handleLogin}
           style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50px",
-            fontSize: "24px",
-            fontWeight: "bold",
-            userSelect: "none",
+            width: "400px",
+            border: "1px solid #ddd",
+            padding: "20px",
+            borderRadius: "5px",
+            backgroundColor: "#fff",
           }}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
         >
-          {randomNumber}
-        </div>
-        <Form.Item
-          label="Sayıyı Girin"
-          name="number"
-          rules={[
-            {
-              required: true,
-              message: "Lütfen sayıyı girin",
-            },
-          ]}
-          labelAlign="left"
-        >
-          <Input
-            onChange={handleNumberChange}
-            value={enteredNumber}
-            placeholder="Üstte yazan sayıyı giriniz"
-          />
-        </Form.Item>
-        <Form.Item
-          label="TC Kimlik No"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "TC Kimlik Numaranızı giriniz",
-            },
-          ]}
-          labelAlign="left"
-          colon={false}
-        >
-          <Input placeholder="TC Kimlik Numarınızı giriniz" />
-        </Form.Item>
-        <Form.Item
-          label="Şifre"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Şifrenizi giriniz",
-            },
-          ]}
-          labelAlign="left"
-          colon={false}
-        >
-          <Input.Password placeholder="Şifrenizi giriniz" />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 9 }}>
-          <Button type="primary" htmlType="submit">
-            Giriş Yap
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "50px",
+              fontSize: "24px",
+              fontWeight: "bold",
+              userSelect: "none",
+            }}
+          >
+            {randomNumber}
+          </div>
+          <Form.Item
+            label="Sayıyı Girin"
+            name="number"
+            rules={[
+              {
+                required: true,
+                message: "Lütfen sayıyı girin",
+              },
+            ]}
+            labelAlign="left"
+          >
+            <Input
+              onChange={handleNumberChange}
+              value={enteredNumber}
+              placeholder="Üstte yazan sayıyı giriniz"
+            />
+          </Form.Item>
+          <Form.Item
+            label="TC Kimlik No"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "TC Kimlik Numaranızı giriniz",
+              },
+            ]}
+            labelAlign="left"
+            colon={false}
+          >
+            <Input placeholder="TC Kimlik Numarınızı giriniz" />
+          </Form.Item>
+          <Form.Item
+            label="Şifre"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Şifrenizi giriniz",
+              },
+            ]}
+            labelAlign="left"
+            colon={false}
+          >
+            <Input.Password placeholder="Şifrenizi giriniz" />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 9 }}>
+            <Button type="primary" htmlType="submit">
+              Giriş Yap
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 };
 

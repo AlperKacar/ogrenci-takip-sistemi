@@ -1,0 +1,44 @@
+.sidebar {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 16px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 16px;
+}
+.body-display {
+  display: flex;
+}
+.header-title {
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.teacher-info {
+  margin-bottom: 16px;
+}
+
+.teacher-name {
+  font-weight: bold;
+}
+
+.announcements {
+  margin-bottom: 16px;
+}
+
+.add-student-button {
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}

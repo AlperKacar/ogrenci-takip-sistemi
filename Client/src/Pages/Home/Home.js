@@ -23,7 +23,7 @@ const Home = () => {
         BİRİNCİ SINIF ÖĞRENCİ TAKİP SİSTEMİ
       </Title>
       <div className="role-buttons">
-        <Link to="/oibs/akademik/login">
+        <Link to="/oibs/teacher/login">
           <Button
             className="ant-btn-primary ant-btn-left"
             type={selectedRole === "student" ? "primary" : "default"}
@@ -31,7 +31,7 @@ const Home = () => {
             size="large"
           ></Button>
         </Link>
-        <Link to="/oibs/ogrenci/login">
+        <Link to="/oibs/student/login">
           <Button
             className="ant-btn-default ant-btn-right"
             type={selectedRole === "teacher" ? "primary" : "default"}

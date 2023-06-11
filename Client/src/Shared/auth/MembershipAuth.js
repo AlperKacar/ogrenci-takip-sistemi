@@ -4,12 +4,13 @@ import { useLocation, Navigate } from "react-router-dom";
 
 const MembershipAuth = memo(({ children }) => {
   const isLoggedIn = useSelector((state) => state.userInformation.isLoggedIn);
+  const user = useSelector((state) => state.userInformation.user);
   let location = useLocation();
 
-  if (isLoggedIn) {
+  if (isLoggedIn && user === "Öğretmen") {
     return (
       <Navigate
-        to="/"
+        to="/oibs/start/teacher"
         replace={true}
         state={{
           return_url: location.pathname,
@@ -17,7 +18,17 @@ const MembershipAuth = memo(({ children }) => {
       />
     );
   }
-
+  if (isLoggedIn && user === "Öğrenci") {
+    return (
+      <Navigate
+        to="/oibs/start/student"
+        replace={true}
+        state={{
+          return_url: location.pathname,
+        }}
+      />
+    );
+  }
   return children;
 });
 

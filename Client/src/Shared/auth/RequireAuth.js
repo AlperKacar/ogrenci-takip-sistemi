@@ -5,11 +5,10 @@ import { useSelector } from "react-redux";
 const RequireAuth = memo(({ children }) => {
   const isLoggedIn = useSelector((state) => state.userInformation.isLoggedIn);
   const location = useLocation();
-  console.log(isLoggedIn);
   if (!isLoggedIn) {
     return (
       <Navigate
-        to="/auth/login"
+        to="/"
         replace={true}
         state={{
           return_url: location.pathname,

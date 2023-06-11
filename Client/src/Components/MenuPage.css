@@ -1,0 +1,36 @@
+.menu-container {
+  background-color: #f0f0f0;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.menu-title {
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.menu-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  margin-bottom: 8px;
+}
+
+.menu-item:last-child {
+  margin-bottom: 0;
+}
+
+.menu-item a {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.menu-item a:hover {
+  text-decoration: underline;
+}
