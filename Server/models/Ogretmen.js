@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema({
+const ogretmenSchema = mongoose.Schema({
   fullname: { type: String, trim: true },
   nickname: { type: String, unique: true, trim: true },
   password: { type: String },
-  studentnumber: { type: String },
   regDate: { type: String },
-  hesapTuru: { type: String },
   phone: { type: Number },
+  ogrenciSayisi: { type: Number, default:0 },
   verifytoken: {
     type: String,
   },
+  tur:{type:String,default:"Ogretmen"},
   tcno: { type: Number },
   tokens: [
     {
@@ -20,7 +20,9 @@ const userSchema = mongoose.Schema({
       },
     },
   ],
+ 
+  
 });
 
-const user = mongoose.model("user", userSchema);
-export default user;
+const ogretmen = mongoose.model("ogretmen", ogretmenSchema);
+export default ogretmen;

@@ -9,7 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import mime from "mime-types";
-
+import auth from "./routes/userAuth"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
@@ -23,6 +23,7 @@ app.use(morgan("common"));
 
 // app.use("/admin", admins);
 // app.use("/home", homeilan);
+app.use("/auth",auth)
 
 const PORT = process.env.PORT || 5000;
 
