@@ -5,6 +5,7 @@ import {
   LoginTeacher,
   PageNotFound,
   SignUpTeacher,
+  Home,
 } from "./routerComponents";
 import LayoutMembership from "../Shared/layout/LayoutMembership";
 import MembershipAuth from "../Shared/auth/MembershipAuth";
@@ -16,15 +17,17 @@ const RouterMembership = () => {
     <Suspense fallback={<LoadingTruck />}>
       <Routes>
         <Route
+          path="/"
           element={
             <MembershipAuth>
               <LayoutMembership />
             </MembershipAuth>
           }
         >
-          <Route path="student/login" element={<LoginStudent />} />
-          <Route path="teacher/login" element={<LoginTeacher />} />
-          <Route path="teacher/signup" element={<SignUpTeacher />} />
+          <Route index element={<Home />} />
+          <Route path="oibs/student/login" element={<LoginStudent />} />
+          <Route path="oibs/teacher/login" element={<LoginTeacher />} />
+          <Route path="oibs/teacher/signup" element={<SignUpTeacher />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

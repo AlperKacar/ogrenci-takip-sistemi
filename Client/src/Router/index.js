@@ -5,9 +5,9 @@ import LayoutMembership from "../Shared/layout/LayoutMembership";
 import {
   RouterMembership,
   PageNotFound,
-  RouterPrivate,
+  RouterPrivateTeacher,
+  RouterPrivateStudent,
 } from "./routerComponents";
-import RouterGeneral from "./routerGeneral";
 
 const Router = () => {
   const { pathname } = useLocation();
@@ -30,12 +30,9 @@ const Router = () => {
             </LayoutMembership>
           }
         />
-
-        {/* user login... */}
-        <Route path="/oibs/*" element={<RouterMembership />} />
-        {/* login sonrası private */}
-        <Route path="/oibs/start/*" element={<RouterPrivate />} />
-        <Route path="/*" element={<RouterGeneral />} />
+        <Route path="/*" element={<RouterMembership />} />
+        <Route path="/oibs/start/teacher*" element={<RouterPrivateTeacher />} />
+        <Route path="/oibs/start/student*" element={<RouterPrivateStudent />} />
       </Routes>
     </Suspense>
   );
