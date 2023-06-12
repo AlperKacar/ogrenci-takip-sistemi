@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { setLogin } from "../../store/userInformation";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
 const SignupPage = () => {
@@ -12,7 +10,6 @@ const SignupPage = () => {
   const toggleReturnText = (show) => {
     setShowReturnText(show);
   };
-  const dispatch = useDispatch();
 
   const handleSignup = (values) => {
     axios
