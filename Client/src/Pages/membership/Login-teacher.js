@@ -3,8 +3,9 @@ import axios from "axios";
 import { Input, Button, Form } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../../store/userInformation";
+import { setLogin, setUser } from "../../store/userInformation";
 import { Helmet } from "react-helmet";
+import { toast } from "react-toastify";
 
 const LoginTeacher = () => {
   const [form] = Form.useForm();
@@ -28,10 +29,15 @@ const LoginTeacher = () => {
     axios
       .post("http://localhost:3001/auth/teacher/Login", values)
       .then((response) => {
-        dispatch(setLogin(response));
-        navigate("/obis/start/teacher", {
-          replace: true,
-        });
+        if (response.status === 200) {
+          const { token, user, message } = response.data;
+          dispatch(setLogin(token));
+          dispatch(setUser(user));
+          toast.success(message);
+          navigate("/oibs/start/teacher", {
+            replace: true,
+          });
+        }
       })
       .catch((error) => {
         console.log(error);

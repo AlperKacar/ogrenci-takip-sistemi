@@ -9,7 +9,6 @@ import { Helmet } from "react-helmet";
 const SignupPage = () => {
   const navigate = useNavigate();
   const [showReturnText, setShowReturnText] = useState(false);
-  const [first, setFirst] = useState("");
   const toggleReturnText = (show) => {
     setShowReturnText(show);
   };
@@ -19,7 +18,6 @@ const SignupPage = () => {
     axios
       .post("http://localhost:3001/auth/teacher/Signup", values)
       .then((response) => {
-        console.log(response);
         toast.success(response.data.message);
         navigate("/oibs/teacher/login", {
           replace: true,
@@ -102,7 +100,7 @@ const SignupPage = () => {
               },
             ]}
           >
-            <Input onChange={(e) => setFirst(e.target.value)} />
+            <Input />
           </Form.Item>
           <Form.Item
             label="Kullanıcı Adı"

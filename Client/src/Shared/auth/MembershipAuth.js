@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 
 const MembershipAuth = memo(({ children }) => {
-  const isLoggedIn = useSelector((state) => state.userInformation.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.userInformation.isLogged);
   const user = useSelector((state) => state.userInformation.user);
   let location = useLocation();
 
-  if (isLoggedIn && user === "Öğretmen") {
+  if (isLoggedIn && user === "Ogretmen") {
     return (
       <Navigate
         to="/oibs/start/teacher"
