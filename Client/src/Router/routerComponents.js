@@ -13,13 +13,13 @@ const TeacherProfile = lazy(() =>
   import("../Pages/TeacherProfile/TeacherProfile")
 );
 const TeacherProfileAttendance = lazy(() =>
-  import("../Pages/TeacherProfile/TeacherProfileAttendance")
+  import("../Pages/TeacherProfile/TeacherAttendancePage")
 );
 const TeacherProfileEdit = lazy(() =>
-  import("../Pages/TeacherProfile/TeacherProfileEdit")
+  import("../Pages/TeacherProfile/TeacherStudentsPage")
 );
 const TeacherProfileNote = lazy(() =>
-  import("../Pages/TeacherProfile/TeacherProfileNote")
+  import("../Pages/TeacherProfile/StudentGradesPage")
 );
 
 //StudentProfile

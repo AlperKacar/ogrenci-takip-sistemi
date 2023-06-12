@@ -8,13 +8,13 @@ const MenuPage = () => {
       <h1 className="menu-title">Menü</h1>
       <ul className="menu-list">
         <li className="menu-item">
-          <Link to="yoklama">Öğrenci Yoklaması</Link>
+          <Link to="/oibs/start/teacher/yoklama">Öğrenci Yoklaması</Link>
         </li>
         <li className="menu-item">
-          <Link to="notlar">Öğrenci Notları</Link>
+          <Link to="/oibs/start/teacher/notlar">Öğrenci Notları</Link>
         </li>
         <li className="menu-item">
-          <Link to="duzenleme">Öğrenci Düzenleme</Link>
+          <Link to="/oibs/start/teacher/duzenleme">Öğrenci Düzenleme</Link>
         </li>
       </ul>
     </div>
