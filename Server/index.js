@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import mime from "mime-types";
 import auth from "./routes/userAuth.js";
-import Ogrislem from "./routes/ogretmenIslemleri.js"
+import ogretmen from "./routes/ogretmenIslemleri.js"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
@@ -27,7 +27,7 @@ app.use(cors());
 // app.use("/admin", admins);
 // app.use("/home", homeilan);
 app.use("/auth", auth);
-app.use("/islem", Ogrislem);
+app.use("/ogretmen", ogretmen);
 
 const PORT = process.env.PORT || 5000;
 

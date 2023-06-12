@@ -1,15 +1,21 @@
 // api.js
 import axios from "axios";
-
-export const fetchTeacherName = async () => {
+const base_url="http://localhost:3001"
+export const fetchTeacherName = async (token) => {
   try {
-    const response = await axios.get("/api/teacher");
-    return response.data.teacherName;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+    const response = await axios.get(
+      `${base_url}/ogretmen/ogretmenGetir`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+    
+  } catch (error) {}
 };
+
 
 export const fetchAnnouncements = async () => {
   try {
@@ -45,10 +51,14 @@ export const deleteAnnouncement = async (id) => {
   }
 };
 
-export const addStudent = async (values) => {
+export const addStudent = async (values,token) => {
   try {
-    await axios.post("/api/students", values);
-  } catch (error) {
+    await axios.post(`${base_url}/ogretmen/ogrenci_ekle`, values, {
+      headers: {
+        Authorization:` Bearer ${token}`,
+      },
+    })}catch (error) {
     console.log(error);
   }
 };
+

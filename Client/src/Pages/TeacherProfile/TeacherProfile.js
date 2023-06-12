@@ -11,9 +11,11 @@ import {
   deleteAnnouncement,
   addStudent,
 } from "../../Api/TeacherApi";
+import { useSelector } from "react-redux";
 const { Header, Content } = Layout;
 const { Option } = Select;
 const TeacherPage = () => {
+  const  token = useSelector((state) => state.userInformation.token);
   const [teacherName, setTeacherName] = useState("");
   const [announcements, setAnnouncements] = useState([]);
   const [form] = Form.useForm();
@@ -21,7 +23,7 @@ const TeacherPage = () => {
 
   useEffect(() => {
     // Öğretmen adını API'den al
-    fetchTeacherName();
+    fetchTeacherData();
     // Duyuruları API'den al
     fetchAnnouncements();
   }, []);
@@ -41,7 +43,7 @@ const TeacherPage = () => {
     { value: "2", label: "2. Dönem" },
   ];
   const fetchTeacherData = async () => {
-    const teacherData = await fetchTeacherName();
+    const teacherData = await fetchTeacherName(token);
     setTeacherName(teacherData);
   };
 
@@ -67,7 +69,7 @@ const TeacherPage = () => {
   };
 
   const handleAddStudent = async (values) => {
-    await addStudent(values);
+    await addStudent(values,token);
     setIsModalVisible(false);
   };
 
@@ -126,13 +128,14 @@ const TeacherPage = () => {
         <div className="header-container">
           <h1 className="header-title">Öğretmen Sayfası</h1>
           <div className="teacher-info">
-            <span className="teacher-name">Öğretmen Adı: {teacherName}</span>
+            <span className="teacher-name">Öğretmen Adı: </span>
           </div>
         </div>
       </Header>
       <div className="body-display">
         <MenuPage />
         <Content className="teacher-page">
+          <h1>{teacherName}</h1>
           <div className="add-student-button">
             <Button type="primary" onClick={showModal}>
               Öğrenci Ekle

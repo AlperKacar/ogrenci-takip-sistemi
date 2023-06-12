@@ -7,19 +7,9 @@ const ogretmenSchema = mongoose.Schema({
   regDate: { type: String },
   phone: { type: Number },
   ogrenciSayisi: { type: Number, default:0 },
-  verifytoken: {
-    type: String,
-  },
   tur:{type:String,default:"Ogretmen"},
   tcno: { type: Number },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  
  
   
 });
