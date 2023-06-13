@@ -1,0 +1,17 @@
+.duyurular-container {
+    margin-top: 20px;
+  }
+  
+  .duyurular-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .duyurular-table th,
+  .duyurular-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    width: 1000px;
+    height: 100px;
+  }

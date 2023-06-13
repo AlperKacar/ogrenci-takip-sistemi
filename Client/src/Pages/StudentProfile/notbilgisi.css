@@ -1,0 +1,17 @@
+.not-bilgisi-container {
+    margin: auto;
+    
+  }
+  
+  .not-bilgisi-table {
+    width: 1320px;
+    height: 400px;
+    border-collapse: collapse;
+  }
+  
+  .not-bilgisi-table th,
+  .not-bilgisi-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }

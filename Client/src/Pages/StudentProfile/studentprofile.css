@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    
+  }
+  
+  .yana-al {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    margin-top:25px;
+    border: 1px solid black;
+    position: absolute;
+    top: 300px;
+    height: 60%;
+    left: 20px;
+  }
+  
+  .main-body {
+    margin-left: 30px;
+    display: flex;
+    width: 90%;
+    height: 100%  ;
+    border: 1px solid black;
+  }
+  .university-name{
+    display: flex;
+  }
+  

@@ -1,0 +1,21 @@
+.new-main{
+    display: flex;
+    
+}
+.ortala{
+    position: relative;
+    left: 640px;
+   
+}
+.baslangic{
+    width: 1000px;
+    height: 250px;
+    position: relative;
+    top: 100px;
+    right: 60px;
+
+}
+.devamsizliklar{
+    display: inline;
+    margin-right: 30px;
+}

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Input, Button, Form } from "antd";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../../store/userInformation";
-import { Link } from "react-router-dom";
+import { setLogin, setUser } from "../../store/userInformation";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { toast } from "react-toastify";
 
 const LoginStudent = () => {
   const [form] = Form.useForm();
@@ -12,7 +13,7 @@ const LoginStudent = () => {
   const [showReturnText, setShowReturnText] = useState(false);
   const [randomNumber, setRandomNumber] = useState(generateRandomNumber());
   const [enteredNumber, setEnteredNumber] = useState("");
-
+  const navigate = useNavigate();
   function generateRandomNumber() {
     return Math.floor(1000 + Math.random() * 9000);
   }
@@ -25,16 +26,30 @@ const LoginStudent = () => {
   };
 
   const handleLogin = (values) => {
+    if (enteredNumber !== randomNumber.toString()) {
+      toast.error("Girilen numara yanlış");
+      return;
+    }
     axios
       .post("http://localhost:3001/auth/student/login", values)
+
       .then((response) => {
-        console.log(response.data);
-        // Giriş başarılı olduğunda yönlendirme yapabilirsiniz.
-        dispatch(setLogin(response));
+        const { token, user, message } = response.data;
+
+        if (response.status === 200) {
+          dispatch(setLogin(token));
+          dispatch(setUser(user));
+          toast.success(message);
+          navigate("/oibs/start/student", {
+            replace: true,
+          });
+        } else {
+          const { message } = response.data;
+          toast.error(message);
+        }
       })
       .catch((error) => {
-        console.log(error);
-        // Giriş başarısız olduğunda hata mesajını görüntüleyebilirsiniz.
+        toast.error(error.response.data.message);
       });
   };
 
@@ -132,7 +147,7 @@ const LoginStudent = () => {
           </Form.Item>
           <Form.Item
             label="TC Kimlik No"
-            name="username"
+            name="tc"
             rules={[
               {
                 required: true,
