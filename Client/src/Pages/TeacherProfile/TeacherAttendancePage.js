@@ -4,7 +4,7 @@ import axios from "axios";
 import "./StudentGradesPage.css";
 import { useSelector } from "react-redux";
 import MenuPage from "../../Components/MenuPage";
-import dayjs from "dayjs";
+
 export default function TeacherAttendancePage() {
   const token = useSelector((state) => state.userInformation.token);
   const [students, setStudents] = useState([]);
@@ -33,9 +33,7 @@ export default function TeacherAttendancePage() {
   useEffect(() => {
     fetchStudents();
   }, [searchQuery]);
-  const disableFutureDates = (current) => {
-    return current && current > dayjs().endOf("day");
-  };
+
   const handleAttendance = async (student) => {
     try {
       if (!selectedDate) {
@@ -43,16 +41,16 @@ export default function TeacherAttendancePage() {
         return;
       }
 
-      
+      const formattedDate = selectedDate.format("YYYY-MM-DD");
       await axios.post(
         `http://localhost:3001/ogretmen/yoklama_al/${student.studentNumber}`,
-        { date: selectedDate }
+        { date: formattedDate }
       );
-      message.success("Yoklama Başarıyla Kaydedildi.");
+      message.success("Attendance taken successfully");
       fetchStudents();
     } catch (error) {
       console.error("Error taking attendance:", error);
-      message.error("Yoklama Girilirken Bir Hata Oluştu.");
+      message.error("An error occurred while taking attendance");
     }
   };
 
@@ -82,8 +80,7 @@ export default function TeacherAttendancePage() {
       key: "action",
       render: (text, student) => (
         <div>
-          <DatePicker disabledDate={disableFutureDates}
-          onChange={(date)=>{setSelectedDate(dayjs(date).format("DD/MM/YYYY"))}} />
+          <DatePicker onChange={(date) => setSelectedDate(date)} />
 
           <Button onClick={() => handleAttendance(student)}>
             Take Attendance
@@ -95,22 +92,14 @@ export default function TeacherAttendancePage() {
 
   return (
     <div className="student-grades-page">
-      <div className="header">
-        <div className="left-section">
-          <h1>Teacher's Name</h1>
-        </div>
-        <div className="right-section">
-          <Input
-            type="text"
-            placeholder="Search students"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
       <MenuPage />
+      <Input
+        type="text"
+        placeholder="Öğrenci ara"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <Table dataSource={students} columns={columns} />
-      <div></div>
     </div>
   );
 }

@@ -47,14 +47,14 @@ export const ogrenciListele = async (req, res) => {
 export const ogrenciNotuGir = async (req, res) => {
   try {
     const studentId = req.params.id;
-    const { selectedExam, newGrade, attended ,selectedCourse} = req.body;
-    
+    const { selectedExam, newGrade, attended, selectedCourse } = req.body;
+
     const lastChar = selectedExam.charAt(selectedExam.length - 1);
-    const dersAdi=selectedCourse+lastChar
-    console.log("ders",dersAdi)
-    console.log("selectedExam",selectedExam)
-    console.log("grade",newGrade)
-    console.log("selectedCourse",selectedCourse)
+    const dersAdi = selectedCourse + lastChar;
+    console.log("ders", dersAdi);
+    console.log("selectedExam", selectedExam);
+    console.log("grade", newGrade);
+    console.log("selectedCourse", selectedCourse);
 
     const Öğrenci = await ogrenci.findById(studentId);
     if (!Öğrenci) {
@@ -145,26 +145,21 @@ export const ogrenciSil = async (req, res) => {
 //Öğrenci bilgileri değiştir
 export const resetStudentPassword = async (req, res) => {
   try {
-    const {fullName,tc,parentPhone,grade,term}=req.body
     const studentId = req.params.id;
     const student = await ogrenci.findById(studentId);
-   
-    
+
     if (!student) {
       return res.status(404).json({ message: "Öğrenci bulunamadı." });
     }
-    //Güncelleme
-    student.fullName=fullName
-    student.tc=tc
-    student.parentPhone=parentPhone
-    student.grade=grade
-    student.term=term
+
     // Şifre sıfırlama işlemi
     const newPassword = student.studentNumber; // Yeni şifre olarak okul numarasını kullanıyoruz
     student.password = newPassword;
     await student.save();
 
-    return res.status(200).json({ message: "Öğrencinin bilgileri güncellendi." });
+    return res
+      .status(200)
+      .json({ message: "Öğrencinin bilgileri güncellendi." });
   } catch (error) {
     return res
       .status(400)
@@ -265,7 +260,7 @@ export const takeAttendance = async (req, res) => {
     const studentNumber = req.params.studentNumber;
 
     const öğrenci = await ogrenci.findOne({ studentNumber: studentNumber });
-   
+
     // Öğrenciye ait yoklama kaydını oluşturuyoruz
     const attendance = await yoklama.create({
       ogr_num: studentNumber,
@@ -279,5 +274,34 @@ export const takeAttendance = async (req, res) => {
     res.status(200).json({ attendance, message: "Yoklama alındı." });
   } catch (error) {
     return res.status(400).json({ message: "Yoklama alınamadı." });
+  }
+};
+
+// Öğrenci bilgilerini güncelleme
+export const updateStudent = async (req, res) => {
+  try {
+    const { fullname, tc, parentPhone, grade, term } = req.body;
+    const studentId = req.params.id;
+    console.log(fullname, tc, parentPhone, grade, term);
+    const student = await ogrenci.findById(studentId);
+
+    if (!student) {
+      return res.status(404).json({ message: "Öğrenci bulunamadı." });
+    }
+    //Güncelleme
+    student.fullname = fullname;
+    student.tc = tc;
+    student.parentPhone = parentPhone;
+    student.grade = grade;
+    student.term = term;
+    await student.save();
+
+    return res
+      .status(200)
+      .json({ message: "Öğrencinin bilgileri güncellendi." });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "Güncelleme işlemi sırasında bir hata oluştu." });
   }
 };

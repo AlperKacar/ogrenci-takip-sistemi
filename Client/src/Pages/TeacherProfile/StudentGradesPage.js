@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, InputNumber, Select, Radio } from "antd";
+import { Table, Button, Modal, InputNumber, Select, Radio, Input } from "antd";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -144,15 +144,21 @@ export default function StudentGradesPage() {
       courseName: course.courseName,
       editGrade: "",
     };
-  
-    const exam1Value = selectedStudent ? selectedStudent[`${course.courseName}1`] : "";
-    const exam2Value = selectedStudent ? selectedStudent[`${course.courseName}2`] : "";
-    const exam3Value = selectedStudent ? selectedStudent[`${course.courseName}3`] : "";
-  
+
+    const exam1Value = selectedStudent
+      ? selectedStudent[`${course.courseName}1`]
+      : "";
+    const exam2Value = selectedStudent
+      ? selectedStudent[`${course.courseName}2`]
+      : "";
+    const exam3Value = selectedStudent
+      ? selectedStudent[`${course.courseName}3`]
+      : "";
+
     courseItem.exam1 = exam1Value;
     courseItem.exam2 = exam2Value;
     courseItem.exam3 = exam3Value;
-  
+
     return courseItem;
   });
   const studentColumns = [
@@ -181,7 +187,7 @@ export default function StudentGradesPage() {
   return (
     <div>
       <MenuPage />
-      <input
+      <Input
         type="text"
         placeholder="Öğrenci ara"
         value={searchQuery}

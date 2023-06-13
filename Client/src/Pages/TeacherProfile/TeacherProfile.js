@@ -5,7 +5,6 @@ import "./TeacherPage.css";
 import { Helmet } from "react-helmet";
 
 import {
-  fetchTeacherName,
   fetchAnnouncements,
   createAnnouncement,
   editAnnouncement,
@@ -13,11 +12,10 @@ import {
   addStudent,
 } from "../../Api/TeacherApi";
 import { useSelector } from "react-redux";
-const { Header, Content } = Layout;
+const { Content } = Layout;
 const { Option } = Select;
 const TeacherPage = () => {
   const token = useSelector((state) => state.userInformation.token);
-  const [teacherName, setTeacherName] = useState("");
   const [announcements, setAnnouncements] = useState([]);
   const [form] = Form.useForm();
   const [new_form] = Form.useForm();
@@ -25,12 +23,10 @@ const TeacherPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   useEffect(() => {
-    // Öğretmen adını API'den al
-    fetchTeacherData();
     // Duyuruları API'den al
     fetchAnnouncementData();
   }, []);
- 
+
   const gradeOptions = [
     { value: "1", label: "1. Sınıf" },
     { value: "2", label: "2. Sınıf" },
@@ -50,11 +46,6 @@ const TeacherPage = () => {
   const handleOpenEditModal = (id) => {
     setSelectedAnnouncement(id);
     setModalVisible(true);
-  };
-
-  const fetchTeacherData = async () => {
-    const teacherData = await fetchTeacherName(token);
-    setTeacherName(teacherData);
   };
 
   const fetchAnnouncementData = async () => {
@@ -157,18 +148,9 @@ const TeacherPage = () => {
       <Helmet>
         <title>Öğretmen Sayfası</title>
       </Helmet>
-      <Header>
-        <div className="header-container">
-          <h1 className="header-title">Öğretmen Sayfası</h1>
-          <div className="teacher-info">
-            <span className="teacher-name">Öğretmen Adı: </span>
-          </div>
-        </div>
-      </Header>
       <div className="body-display">
         <MenuPage />
         <Content className="teacher-page">
-          <h1>{teacherName}</h1>
           <div className="add-student-button">
             <Button type="primary" onClick={showModal}>
               Öğrenci Ekle

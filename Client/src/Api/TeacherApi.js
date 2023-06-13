@@ -3,25 +3,6 @@ import { toast } from "react-toastify";
 
 const base_url = "http://localhost:3001";
 
-export const fetchTeacherName = async (token) => {
-  try {
-    const response = await axios.get(`${base_url}/ogretmen/ogretmenGetir`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.status === 200) {
-      toast.success(response.data.message);
-      return response.data;
-    } else {
-      toast.error(response.data.message);
-      return null;
-    }
-  } catch (error) {
-    toast.error("Öğretmen adı alınamadı.");
-    return null;
-  }
-};
 export const fetchAnnouncements = async (token) => {
   try {
     const response = await axios.get(`${base_url}/ogretmen/announcements`, {
