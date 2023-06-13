@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import mime from "mime-types";
 import auth from "./routes/userAuth.js";
-import ogretmen from "./routes/ogretmenIslemleri.js"
+import ogretmen from "./routes/ogretmenIslemleri.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();

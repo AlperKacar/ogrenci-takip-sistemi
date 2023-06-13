@@ -26,22 +26,30 @@ const LoginTeacher = () => {
     setShowReturnText(show);
   };
   const handleLogin = (values) => {
+    if (enteredNumber !== randomNumber.toString()) {
+      toast.error("Girilen numara yanlış");
+      return;
+    }
     axios
       .post("http://localhost:3001/auth/teacher/Login", values)
+
       .then((response) => {
+        const { token, user, message } = response.data;
+
         if (response.status === 200) {
-          const { token, user, message } = response.data;
           dispatch(setLogin(token));
           dispatch(setUser(user));
           toast.success(message);
           navigate("/oibs/start/teacher", {
             replace: true,
           });
+        } else {
+          const { message } = response.data;
+          toast.error(message);
         }
       })
       .catch((error) => {
-        console.log(error);
-        // Handle login error
+        toast.error(error.response.data.message);
       });
   };
 

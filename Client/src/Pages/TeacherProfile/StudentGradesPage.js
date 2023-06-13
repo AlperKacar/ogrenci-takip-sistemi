@@ -1,126 +1,216 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Input, message } from "antd";
+import { Table, Button, Modal, InputNumber, Select, Radio } from "antd";
 import axios from "axios";
-import "./StudentGradesPage.css";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import MenuPage from "../../Components/MenuPage";
 
+const { Option } = Select;
 export default function StudentGradesPage() {
   const token = useSelector((state) => state.userInformation.token);
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [grade, setGrade] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [newGrade, setNewGrade] = useState(0);
+  const [selectedExam, setSelectedExam] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [courseTableVisible, setCourseTableVisible] = useState(false);
+  const [attended, setAttended] = useState(true);
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/students", {
-        params: {
-          search: searchQuery,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setStudents(response.data.students);
+      const response = await axios.get(
+        "http://localhost:3001/ogretmen/TumOgrenciListele",
+        {
+          params: {
+            search: searchQuery,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setStudents(response.data.Ogrenciler);
     } catch (error) {
-      console.error("Error fetching students:", error);
+      console.error("Öğrenciler alınırken hata oluştu:", error);
     }
   };
 
   useEffect(() => {
     fetchStudents();
   }, [searchQuery]);
-
-  const handleEditGrade = (student) => {
+  const handleEditGrade = (student, course) => {
+    setModalVisible(true);
     setSelectedStudent(student);
-    setSelectedCourse(student.course);
-    setGrade(student.grade);
-    setEditModalVisible(true);
+    setSelectedCourse(course);
   };
-
-  const handleSaveGrade = async () => {
+  const saveGrade = async () => {
     try {
-      await axios.put(
-        `http://localhost:3001/students/${selectedStudent.number}/grade`,
+      const response = await axios.post(
+        `http://localhost:3001/ogretmen/ogrenci_notu_gir/${selectedStudent._id}`,
         {
-          grade: grade,
+          selectedExam, // Hangi sınav olduğu gönderiliyor
+          newGrade, // Sınav notu gönderiliyor
+          attended, // Sınava girildi durumu gönderiliyor
         }
       );
-      message.success("Grade updated successfully");
-      setEditModalVisible(false);
-      fetchStudents();
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        setModalVisible(false);
+        fetchStudents();
+        setCourseTableVisible(false);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
       console.error("Error updating grade:", error);
-      message.error("An error occurred while updating the grade");
     }
   };
-  const columns = [
+
+  const handleViewCourses = (student) => {
+    setSelectedStudent(student);
+    setCourseTableVisible(true);
+  };
+
+  const courses = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      courseName: "Matematik",
+      exams: [
+        { examName: "Sınav 1", key: "matematik1" },
+        { examName: "Sınav 2", key: "matematik2" },
+        { examName: "Sınav 3", key: "matematik3" },
+      ],
     },
     {
-      title: "Number",
-      dataIndex: "number",
-      key: "number",
+      courseName: "HayatBilgisi",
+      exams: [
+        { examName: "Sınav 1", key: "hayatBilgisi1" },
+        { examName: "Sınav 2", key: "hayatBilgisi2" },
+        { examName: "Sınav 3", key: "hayatBilgisi3" },
+      ],
     },
     {
-      title: "Course",
-      dataIndex: "course",
-      key: "course",
+      courseName: "FenBilgisi",
+      exams: [
+        { examName: "Sınav 1", key: "fenBilgisi1" },
+        { examName: "Sınav 2", key: "fenBilgisi2" },
+        { examName: "Sınav 3", key: "fenBilgisi3" },
+      ],
+    },
+  ];
+
+  const courseColumns = [
+    {
+      title: "Ders Adı",
+      dataIndex: "courseName",
+      key: "courseName",
+    },
+    ...courses[0].exams.map((exam) => ({
+      title: exam.examName,
+      dataIndex: exam.key,
+      key: exam.key,
+    })),
+    {
+      title: "Notu Düzenle",
+      dataIndex: "editGrade",
+      key: "editGrade",
+      render: (text, record) => (
+        <Button
+          type="primary"
+          onClick={() =>
+            handleEditGrade(selectedStudent, record.courseName, record.key)
+          }
+        >
+          Notu Düzenle
+        </Button>
+      ),
+    },
+  ];
+
+  const courseData = courses.map((course) => {
+    const courseItem = {
+      courseName: course.courseName,
+      editGrade: "",
+    };
+    course.exams.forEach((exam) => {
+      courseItem[exam.key] = selectedStudent ? selectedStudent[exam.key] : "";
+    });
+    return courseItem;
+  });
+
+  const studentColumns = [
+    {
+      title: "İsim",
+      dataIndex: "fullname",
+      key: "fullname",
     },
     {
-      title: "Grade",
-      dataIndex: "grade",
-      key: "grade",
+      title: "Öğrenci Numarası",
+      dataIndex: "studentNumber",
+      key: "studentNumber",
     },
     {
-      title: "Action",
-      key: "action",
+      title: "Dersleri Görüntüle",
+      dataIndex: "viewCourses",
+      key: "viewCourses",
       render: (text, student) => (
-        <Button type="primary" onClick={() => handleEditGrade(student)}>
-          Edit Grade
+        <Button type="primary" onClick={() => handleViewCourses(student)}>
+          Dersleri Görüntüle
         </Button>
       ),
     },
   ];
 
   return (
-    <div className="student-grades-page">
-      <div className="header">
-        <div className="left-section">
-          <h1>Teacher's Name</h1>
-        </div>
-        <div className="right-section">
-          <Input
-            type="text"
-            placeholder="Search students"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
+    <div>
       <MenuPage />
-      <Table dataSource={students} columns={columns} />
+      <input
+        type="text"
+        placeholder="Öğrenci ara"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <Table dataSource={students} columns={studentColumns} />
 
+      {/* Not düzenleme modalı */}
       <Modal
-        title="Edit Grade"
-        open={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
-        onOk={handleSaveGrade}
+        title="Notu Düzenle"
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onOk={saveGrade}
       >
-        <p>Course: {selectedCourse}</p>
-        <Input
-          type="number"
-          placeholder="Enter grade"
-          value={grade}
-          onChange={(e) => setGrade(e.target.value)}
-        />
+        <p>{selectedExam && `${selectedCourse}`}</p>
+        <Select
+          defaultValue="Sınav Seçin"
+          onChange={(value) => setSelectedExam(value)}
+        >
+          {courses[0].exams.map((exam, index) => (
+            <Option key={index} value={exam.key}>
+              {exam.examName}
+            </Option>
+          ))}
+        </Select>
+        {attended && (
+          <InputNumber
+            placeholder="Notu girin"
+            value={newGrade}
+            onChange={(value) => setNewGrade(value)}
+          />
+        )}
+
+        <Radio.Group
+          onChange={(e) => setAttended(e.target.value)}
+          value={attended}
+        >
+          <Radio value={true}>Girdi</Radio>
+          <Radio value={false}>Girmedi</Radio>
+        </Radio.Group>
       </Modal>
+
+      {courseTableVisible && (
+        <Table dataSource={courseData} columns={courseColumns} />
+      )}
     </div>
   );
 }

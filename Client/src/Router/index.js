@@ -31,8 +31,14 @@ const Router = () => {
           }
         />
         <Route path="/*" element={<RouterMembership />} />
-        <Route path="/oibs/start/teacher*" element={<RouterPrivateTeacher />} />
-        <Route path="/oibs/start/student*" element={<RouterPrivateStudent />} />
+        <Route
+          path="/oibs/start/teacher/*"
+          element={<RouterPrivateTeacher />}
+        />
+        <Route
+          path="/oibs/start/student/*"
+          element={<RouterPrivateStudent />}
+        />
       </Routes>
     </Suspense>
   );

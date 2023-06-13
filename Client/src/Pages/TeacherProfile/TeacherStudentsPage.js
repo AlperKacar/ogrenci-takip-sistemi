@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Input, message } from "antd";
+import { Table, Button, Modal, Input, message, Popconfirm } from "antd";
 import axios from "axios";
 import "./StudentGradesPage.css";
 import { useSelector } from "react-redux";
@@ -16,20 +16,22 @@ export default function TeacherStudentsPage() {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/students", {
-        params: {
-          search: searchQuery,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setStudents(response.data.students);
+      const response = await axios.get(
+        "http://localhost:3001/ogretmen/TumOgrenciListele",
+        {
+          params: {
+            search: searchQuery,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setStudents(response.data.Ogrenciler);
     } catch (error) {
-      console.error("Error fetching students:", error);
+      console.error("Öğrenciler alınırken hata oluştu:", error);
     }
   };
-
   useEffect(() => {
     fetchStudents();
   }, [searchQuery]);
@@ -43,20 +45,12 @@ export default function TeacherStudentsPage() {
 
   const handleSaveStudent = async () => {
     try {
-      await axios.put(
-        `http://localhost:3001/students/${selectedStudent.id}`,
-        {
-          name: selectedStudent.name,
-          number: selectedStudent.number,
-          course: selectedCourse,
-          grade: grade,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.put(`http://localhost:3001/students/${selectedStudent.id}`, {
+        name: selectedStudent.name,
+        number: selectedStudent.number,
+        course: selectedCourse,
+        grade: grade,
+      });
       message.success("Student updated successfully");
       setEditModalVisible(false);
       fetchStudents();
@@ -66,21 +60,45 @@ export default function TeacherStudentsPage() {
     }
   };
 
+  const handleResetPassword = async (student) => {
+    try {
+      await axios.put(
+        `http://localhost:3001/students/resetPassword/${student.id}`
+      );
+      message.success("Student password reset successfully");
+      fetchStudents();
+    } catch (error) {
+      console.error("Error resetting student password:", error);
+      message.error("An error occurred while resetting student password");
+    }
+  };
+
+  const handleDeleteStudent = async (student) => {
+    try {
+      await axios.delete(`http://localhost:3001/students/${student.id}`);
+      message.success("Student deleted successfully");
+      fetchStudents();
+    } catch (error) {
+      console.error("Error deleting student:", error);
+      message.error("An error occurred while deleting the student");
+    }
+  };
+
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "FullName",
+      dataIndex: "fullname",
+      key: "fullname",
     },
     {
-      title: "Number",
-      dataIndex: "number",
-      key: "number",
+      title: "StudentNumber",
+      dataIndex: "studentNumber",
+      key: "studentNumber",
     },
     {
-      title: "Course",
-      dataIndex: "course",
-      key: "course",
+      title: "Term",
+      dataIndex: "term",
+      key: "term",
     },
     {
       title: "Grade",
@@ -91,9 +109,24 @@ export default function TeacherStudentsPage() {
       title: "Action",
       key: "action",
       render: (text, student) => (
-        <Button type="primary" onClick={() => handleEditGrade(student)}>
-          Edit Grade
-        </Button>
+        <>
+          <Button type="primary" onClick={() => handleEditGrade(student)}>
+            Edit Grade
+          </Button>
+          <Button type="primary" onClick={() => handleResetPassword(student)}>
+            Reset Password
+          </Button>
+          <Popconfirm
+            title="Are you sure you want to delete this student?"
+            onConfirm={() => handleDeleteStudent(student)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary" danger>
+              Delete Student
+            </Button>
+          </Popconfirm>
+        </>
       ),
     },
   ];
@@ -118,7 +151,7 @@ export default function TeacherStudentsPage() {
 
       <Modal
         title="Edit Grade"
-        open={editModalVisible}
+        visible={editModalVisible}
         onCancel={() => setEditModalVisible(false)}
         onOk={handleSaveStudent}
       >

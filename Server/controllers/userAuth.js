@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ogretmen from "../models/Ogretmen.js";
 import ogrenci from "../models/Ogrenci.js";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 dotenv.config();
 const keysecret = process.env.SECRET_KEY;
 
@@ -17,11 +17,11 @@ function formatDate(date) {
 export const teacherLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log("email:",username)
-    console.log("pw:",password)
-   
+    console.log("email:", username);
+    console.log("pw:", password);
+
     const existingUser = await ogretmen.findOne({ nickname: username });
-    console.log("user:",existingUser)
+    console.log("user:", existingUser);
     if (!existingUser)
       return res.status(400).json({ message: "Öğretmen Kaydı Bulunamadı." });
 
@@ -31,14 +31,18 @@ export const teacherLogin = async (req, res) => {
     );
 
     if (!isPasswordCorrect)
-      return res.status(400).json({ message: "Şifreyi yanlış girdiniz. Lütfen kontrol edin." });
+      return res
+        .status(400)
+        .json({ message: "Şifreyi yanlış girdiniz. Lütfen kontrol edin." });
 
     const token = jwt.sign({ id: existingUser._id }, keysecret);
     console.log(token);
-    res.status(200).json({ token, user: existingUser.tur, message: "Giriş Başarılı."});
+    res
+      .status(200)
+      .json({ token, user: existingUser.tur, message: "Giriş Başarılı." });
   } catch (error) {
     res.status(500).json({ message: "Giriş Yaparken Bir Sorun Oluştu." });
-    console.log("x",error.message)
+    console.log("x", error.message);
   }
 };
 
@@ -69,7 +73,7 @@ export const stdLogin = async (req, res) => {
       .json({ token, user: existingUser.tur, message: "Giriş Başarılı." });
   } catch (error) {
     res.status(500).json({ message: "Giriş Yaparken Bir Sorun Oluştu." });
-    console.log(error.message)
+    console.log(error.message);
   }
 };
 //-------------------------------------------------------------------------------------------LOGİN-----------------------------------------------------------------------------------------------
