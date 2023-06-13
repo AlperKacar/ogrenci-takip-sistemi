@@ -1,31 +1,46 @@
-.new-main{
+.new-main {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
     
-}
-.ortala{
-    position: relative;
-    left: 640px;
-   
-}
-.baslangic{
-    width: 1000px;
-    height: 250px;
-    position: relative;
-    top: 100px;
-    right: 60px;
-
-}
-.devamsizliklar{
-    display: inline;
-    margin-right: 30px;
-    font-size: 17px;
-    font-weight: 600;
-
-}
-.toplamsayi{
+  }
+  
+  .ortala {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .gelmedigin {
     font-size: 20px;
-    font-weight: bold;
+    color: #333;
+  }
+  
+  .baslangic {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .devamsizliklar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .toplamsayi {
+    font-size: 16px;
+    margin-top: 20px;
+    color: #777;
     position: relative;
-    top: 75px;
-   
-}
+    top: 200px;
+    right: 336px;
+  }

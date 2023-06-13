@@ -52,7 +52,7 @@ function StudentProfile() {
      
       return <Devamsizlik devamsizlikSayisi={devamsizliklar.devamsizlikSayisi} tarihler={devamsizliklar.tarihler}/>
     } else if (secili === "2") {
-      return  <Notbilgisi mat1={sinavlar.matematik1} mat2={sinavlar.matematik2} mat3={sinavlar.matematik3} hb1={sinavlar.hayatBilgisi1} hb2={sinavlar.hayatBilgisi2} f1={sinavlar.fenBilgisi1} f2={sinavlar.fenBilgisi2}/>
+      return  <Notbilgisi mat1={sinavlar.matematik1} mat2={sinavlar.matematik2} mat3={sinavlar.matematik3} hb1={sinavlar.hayatBilgisi1} hb2={sinavlar.hayatBilgisi2} hb3={sinavlar.hayatBilgisi3} f1={sinavlar.fenBilgisi1} f2={sinavlar.fenBilgisi2} f3={sinavlar.fenBilgisi3}/>
     } 
     else
       return <Duyurular duyurular={duyurular}/>
