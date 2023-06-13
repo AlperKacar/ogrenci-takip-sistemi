@@ -15,10 +15,12 @@ export default function HeaderAuth(props) {
   const location = useLocation();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { token } = useSelector((state) => state.userInformation);
+  
+  
+
+   
   useEffect(() => {
-    const image = new Image();
-    image.src = logo;
-    image.onload = () => setIsImageLoaded(true);
+    
     fetchUserProfile();
    
   }, []);
@@ -34,7 +36,7 @@ export default function HeaderAuth(props) {
         }
       );
       setName(response.data)
-      
+      setIsImageLoaded(true)
     } catch (error) {}
   };
   

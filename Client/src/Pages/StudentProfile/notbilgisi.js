@@ -1,25 +1,14 @@
 import React from "react";
 import "./notbilgisi.css"
-function Notbilgisi() {
-    function calculateAverage(sinavlar) {
-        const toplam = sinavlar.reduce((acc, curr) => acc + curr, 0);
-        return (toplam / sinavlar.length).toFixed(2);
+function Notbilgisi(props) {
+    function calculateAverage(x,y,z) {
+       const toplam=parseInt(x)+parseInt(y)+parseInt(z);
+       
+       const ortalama=toplam/3
+       return ortalama.toFixed(2)
       }
-  const dersler = [
-    {
-      dersAdi: "Matematik",
-      sinavlar: [80, 85, 90]
-    },
-    {
-      dersAdi: "Hayat Bilgisi",
-      sinavlar: [70, 75, 80]
-    },
-    {
-      dersAdi: "Fen Bilgisi",
-      sinavlar: [90, 85, 95]
-    }
-  ];
-
+      
+     
   return (
     <div className="not-bilgisi-container">
       <table className="not-bilgisi-table">
@@ -33,15 +22,34 @@ function Notbilgisi() {
           </tr>
         </thead>
         <tbody>
-          {dersler.map((ders, index) => (
-            <tr key={index}>
-              <td>{ders.dersAdi}</td>
-              {ders.sinavlar.map((sinav, sinavIndex) => (
-                <td key={sinavIndex}>{sinav}</td>
-              ))}
-              <td>{calculateAverage(ders.sinavlar)}</td>
+         
+            <tr>
+              <td>Matematik</td>
+                <td >{props.mat1}</td>
+                <td >{props.mat2}</td>
+                <td >{props.mat3}</td>
+                <td >{calculateAverage(props.mat1,props.mat2,90)}</td>
+              <td></td>
             </tr>
-          ))}
+            <tr>
+              <td>Hayat Bilgisi</td>
+                <td >{props.hb1}</td>
+                <td >{props.hb2}</td>
+                <td >{props.hb3}</td>
+                <td >{calculateAverage(props.hb1,props.hb2,90)}</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Fen Bilgisi</td>
+                <td >{props.f1}</td>
+                <td >{props.f2}</td>
+                <td >{props.f3}</td>
+                <td >{calculateAverage(props.f1,props.f2,90)}</td>
+              <td></td>
+            </tr>
+          
+          
+          
         </tbody>
       </table>
     </div>

@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import mime from "mime-types";
 import auth from "./routes/userAuth.js";
 import ogretmen from "./routes/ogretmenIslemleri.js";
+import ogrenci from "./routes/ogrenciIslemleri.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
@@ -28,7 +29,7 @@ app.use(cors());
 // app.use("/home", homeilan);
 app.use("/auth", auth);
 app.use("/ogretmen", ogretmen);
-
+app.use("/ogrenci",ogrenci)
 const PORT = process.env.PORT || 5000;
 
 mongoose
