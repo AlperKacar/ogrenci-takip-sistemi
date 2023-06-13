@@ -115,20 +115,46 @@ export const ogrenciEkle = async (req, res) => {
 //Öğrenci Silme
 export const ogrenciSil = async (req, res) => {
   try {
-    const { studentNumber } = req.body;
-
+    const studentId = req.params.id;
+    console.log(studentId);
     const existingUser = await ogrenci.findOneAndDelete({
-      studentNumber: studentNumber,
+      _id: studentId,
     });
+
     if (existingUser) {
       return res.status(200).json({
         message: `${existingUser.fullname} adlı öğrenci başarıyla silinmiştir.`,
       });
     }
+
+    return res.status(404).json({ message: "Öğrenci bulunamadı." });
   } catch (error) {
     return res
       .status(400)
-      .json({ message: "Öğrenci Silinirken Bir Sorun Çıktı." });
+      .json({ message: "Öğrenci silinirken bir sorun oluştu." });
+  }
+};
+
+//Öğrenci şifre sıfırla
+export const resetStudentPassword = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const student = await ogrenci.findById(studentId);
+
+    if (!student) {
+      return res.status(404).json({ message: "Öğrenci bulunamadı." });
+    }
+
+    // Şifre sıfırlama işlemi
+    const newPassword = student.studentNumber; // Yeni şifre olarak okul numarasını kullanıyoruz
+    student.password = newPassword;
+    await student.save();
+
+    return res.status(200).json({ message: "Öğrencinin şifresi sıfırlandı." });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "Şifre sıfırlama işlemi sırasında bir hata oluştu." });
   }
 };
 
@@ -137,16 +163,14 @@ export const ogretmenAdi = async (req, res) => {
   const teacher = await ogretmen.findById(req.user.id);
   const teacherName = teacher.fullname;
   if (teacher) return res.status(200).json(teacherName);
-  else return res.status(200).json({ message: "bir sorun oluştu." });
+  else return res.status(400).json({ message: "bir sorun oluştu." });
 };
 
 //Öğretmene ait duyuruları getir
 export const getAnnouncements = async (req, res) => {
   try {
-    const teacher = await ogretmen.findById(req.user.id);
-    const announcements = await Announcement.findOne({
-      teacher_id: teacher._id,
-    });
+    const teacherId = req.user.id;
+    const announcements = await Announcement.find({ teacher_id: teacherId });
 
     res.status(200).json(announcements);
   } catch (error) {
@@ -156,32 +180,33 @@ export const getAnnouncements = async (req, res) => {
   }
 };
 
-//öğretmene ait yeni duyuru oluştur
 export const newAnnouncement = async (req, res) => {
   try {
-    const teacher = await ogretmen.findById(req.user.id);
-    const announcements = await Announcement.findById({
-      teacher_id: teacher._id,
+    const { title, content } = req.body;
+    const teacherId = req.user.id; // Öğretmen kimliği
+    const teacher = await ogretmen.findById(teacherId);
+    const currentDate = new Date();
+    const formattedDate = formatDate(currentDate);
+
+    const announcement = await Announcement.create({
+      title,
+      content,
+      teacher_id: teacherId,
+      date: formattedDate,
+      teacher_adı: teacher.fullname,
     });
 
-    res.status(200).json(announcements);
+    res.status(200).json({ announcement, message: "Duyuru Oluşturuldu." });
   } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Öğrenci Silinirken Bir Sorun Çıktı." });
+    return res.status(400).json({ message: "Duyuru oluşturulamadı." });
   }
 };
 
 //öğretmene ait  duyuruyu sil.
 export const removeAnnouncement = async (req, res) => {
   const announcementId = req.params.id;
-  const teacherId = req.user.id; // Öğretmen kimliği
-
   try {
-    const announcement = await Announcement.findOneAndRemove({
-      _id: announcementId,
-      teacher_id: teacherId,
-    });
+    const announcement = await Announcement.findByIdAndRemove(announcementId);
 
     if (!announcement) {
       return res.status(404).json({ message: "Duyuru bulunamadı." });
@@ -198,12 +223,11 @@ export const removeAnnouncement = async (req, res) => {
 //Öğretmene ait duyuruyu düzenle.
 export const updateAnnouncement = async (req, res) => {
   const announcementId = req.params.id;
-  const teacherId = req.user.id; // Öğretmen kimliği
   const { title, content } = req.body;
 
   try {
     const announcement = await Announcement.findOneAndUpdate(
-      { _id: announcementId, teacher_id: teacherId },
+      { _id: announcementId },
       { title, content },
       { new: true }
     );
@@ -217,5 +241,31 @@ export const updateAnnouncement = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Duyuru düzenlenirken bir sorun oluştu." });
+  }
+};
+
+// Öğretmenin yoklama alması
+export const takeAttendance = async (req, res) => {
+  try {
+    const { date } = req.body;
+    const studentNumber = req.params.studentNumber;
+
+    const öğrenci = await ogrenci.findOne({ studentNumber: studentNumber });
+    // Tarih string olarak gönderildiği için Date nesnesine dönüştürüyoruz
+    const attendanceDate = new Date(date);
+
+    // Öğrenciye ait yoklama kaydını oluşturuyoruz
+    const attendance = await yoklama.create({
+      ogr_num: studentNumber,
+      tarih: attendanceDate,
+    });
+
+    // Öğrencinin devamsızlık sayısını artırıyoruz
+    öğrenci.devamsizlikSayisi += 1;
+    await öğrenci.save();
+
+    res.status(200).json({ attendance, message: "Yoklama alındı." });
+  } catch (error) {
+    return res.status(400).json({ message: "Yoklama alınamadı." });
   }
 };

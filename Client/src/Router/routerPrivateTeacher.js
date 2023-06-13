@@ -9,7 +9,7 @@ import {
 } from "./routerComponents";
 import LoadingTruck from "../Shared/commonComponents/loading/LoadingTruck";
 import RequireAuth from "../Shared/auth/RequireAuth";
-import LayoutPrivate from "../Shared/layout/LayoutPrivate";
+import LayoutPrivateTeacher from "../Shared/layout/LayoutPrivateTeacher";
 
 const RouterPrivate = () => {
   return (
@@ -18,7 +18,7 @@ const RouterPrivate = () => {
         <Route
           element={
             <RequireAuth>
-              <LayoutPrivate />
+              <LayoutPrivateTeacher />
             </RequireAuth>
           }
         >

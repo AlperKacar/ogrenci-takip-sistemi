@@ -176,7 +176,7 @@ export default function StudentGradesPage() {
       {/* Not düzenleme modalı */}
       <Modal
         title="Notu Düzenle"
-        visible={modalVisible}
+        open={modalVisible}
         onCancel={() => setModalVisible(false)}
         onOk={saveGrade}
       >

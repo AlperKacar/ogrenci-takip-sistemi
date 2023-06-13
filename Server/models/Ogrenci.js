@@ -17,6 +17,9 @@ const ogrSchema = mongoose.Schema({
   hayatBilgisi2: { type: String },
   fenBilgisi2: { type: String },
   matematik2: { type: String },
+  hayatBilgisi3: { type: String },
+  fenBilgisi3: { type: String },
+  matematik3: { type: String },
   devamsizlikSayisi: { type: Number, default: 0 },
   tur: { type: String, default: "Ogrenci" },
 });

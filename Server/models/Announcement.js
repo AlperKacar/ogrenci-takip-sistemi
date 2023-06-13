@@ -13,9 +13,12 @@ const announcementSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  teacher_adı: {
+    type: String,
+    required: true,
+  },
   date: {
-    type: Date,
-    default: Date.now,
+    type: String,
   },
 });
 

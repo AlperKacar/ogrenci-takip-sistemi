@@ -9,6 +9,8 @@ import {
   newAnnouncement,
   removeAnnouncement,
   updateAnnouncement,
+  resetStudentPassword,
+  takeAttendance,
 } from "../controllers/ogretmenIslemleri.js";
 import { verifyToken } from "../middleware/auth.js";
 const router = express.Router();
@@ -16,11 +18,13 @@ const router = express.Router();
 router.get("/TumOgrenciListele", verifyToken, ogrenciListele);
 router.get("/ogretmenGetir", verifyToken, ogretmenAdi);
 router.post("/ogrenci_ekle", verifyToken, ogrenciEkle);
-router.delete("/ogrenci_sil/:_id", ogrenciSil);
 router.post("/ogrenci_notu_gir/:id", ogrenciNotuGir);
-router.get("/announcements", getAnnouncements);
-router.post("/new-announcement", newAnnouncement);
-router.put("/update-announcement", updateAnnouncement);
-router.delete("/remove-announcement", removeAnnouncement);
+router.get("/announcements", verifyToken, getAnnouncements);
+router.post("/new-announcement", verifyToken, newAnnouncement);
+router.post("/yoklama_al/:studentNumber", takeAttendance);
+router.put("/update-announcement/:id", updateAnnouncement);
+router.delete("/remove-announcement/:id", removeAnnouncement);
+router.delete("/ogrenci_sil/:id", ogrenciSil);
+router.put("/resetPassword/:id", resetStudentPassword);
 
 export default router;

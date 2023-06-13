@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { PageNotFound, StudentProfile } from "./routerComponents";
 import LoadingTruck from "../Shared/commonComponents/loading/LoadingTruck";
 import RequireAuth from "../Shared/auth/RequireAuth";
-import LayoutPrivate from "../Shared/layout/LayoutPrivate";
+import LayoutPrivateStudent from "../Shared/layout/LayoutPrivateStudent";
 
 const RouterPrivate = () => {
   return (
@@ -12,7 +12,7 @@ const RouterPrivate = () => {
         <Route
           element={
             <RequireAuth>
-              <LayoutPrivate />
+              <LayoutPrivateStudent />
             </RequireAuth>
           }
         >

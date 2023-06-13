@@ -8,10 +8,6 @@ import MenuPage from "../../Components/MenuPage";
 export default function TeacherStudentsPage() {
   const token = useSelector((state) => state.userInformation.token);
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [grade, setGrade] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchStudents = async () => {
@@ -36,34 +32,10 @@ export default function TeacherStudentsPage() {
     fetchStudents();
   }, [searchQuery]);
 
-  const handleEditGrade = (student) => {
-    setSelectedStudent(student);
-    setSelectedCourse(student.course);
-    setGrade(student.grade);
-    setEditModalVisible(true);
-  };
-
-  const handleSaveStudent = async () => {
-    try {
-      await axios.put(`http://localhost:3001/students/${selectedStudent.id}`, {
-        name: selectedStudent.name,
-        number: selectedStudent.number,
-        course: selectedCourse,
-        grade: grade,
-      });
-      message.success("Student updated successfully");
-      setEditModalVisible(false);
-      fetchStudents();
-    } catch (error) {
-      console.error("Error updating student:", error);
-      message.error("An error occurred while updating the student");
-    }
-  };
-
   const handleResetPassword = async (student) => {
     try {
       await axios.put(
-        `http://localhost:3001/students/resetPassword/${student.id}`
+        `http://localhost:3001/ogretmen/resetPassword/${student._id}`
       );
       message.success("Student password reset successfully");
       fetchStudents();
@@ -75,7 +47,9 @@ export default function TeacherStudentsPage() {
 
   const handleDeleteStudent = async (student) => {
     try {
-      await axios.delete(`http://localhost:3001/students/${student.id}`);
+      await axios.delete(
+        `http://localhost:3001/ogretmen/ogrenci_sil/${student._id}`
+      );
       message.success("Student deleted successfully");
       fetchStudents();
     } catch (error) {
@@ -110,9 +84,6 @@ export default function TeacherStudentsPage() {
       key: "action",
       render: (text, student) => (
         <>
-          <Button type="primary" onClick={() => handleEditGrade(student)}>
-            Edit Grade
-          </Button>
           <Button type="primary" onClick={() => handleResetPassword(student)}>
             Reset Password
           </Button>
@@ -148,21 +119,6 @@ export default function TeacherStudentsPage() {
       </div>
       <MenuPage />
       <Table dataSource={students} columns={columns} />
-
-      <Modal
-        title="Edit Grade"
-        visible={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
-        onOk={handleSaveStudent}
-      >
-        <p>Course: {selectedCourse}</p>
-        <Input
-          type="number"
-          placeholder="Enter grade"
-          value={grade}
-          onChange={(e) => setGrade(e.target.value)}
-        />
-      </Modal>
     </div>
   );
 }

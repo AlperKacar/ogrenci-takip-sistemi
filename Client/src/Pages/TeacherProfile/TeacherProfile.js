@@ -15,17 +15,19 @@ import { useSelector } from "react-redux";
 const { Header, Content } = Layout;
 const { Option } = Select;
 const TeacherPage = () => {
-  const  token = useSelector((state) => state.userInformation.token);
+  const token = useSelector((state) => state.userInformation.token);
   const [teacherName, setTeacherName] = useState("");
   const [announcements, setAnnouncements] = useState([]);
   const [form] = Form.useForm();
+  const [new_form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   useEffect(() => {
     // Öğretmen adını API'den al
     fetchTeacherData();
     // Duyuruları API'den al
-    fetchAnnouncements();
+    fetchAnnouncementData();
   }, []);
   const gradeOptions = [
     { value: "1", label: "1. Sınıf" },
@@ -42,18 +44,24 @@ const TeacherPage = () => {
     { value: "1", label: "1. Dönem" },
     { value: "2", label: "2. Dönem" },
   ];
+
+  const handleOpenEditModal = (id) => {
+    setSelectedAnnouncement(id);
+    setModalVisible(true);
+  };
+
   const fetchTeacherData = async () => {
     const teacherData = await fetchTeacherName(token);
     setTeacherName(teacherData);
   };
 
   const fetchAnnouncementData = async () => {
-    const announcementData = await fetchAnnouncements();
+    const announcementData = await fetchAnnouncements(token);
     setAnnouncements(announcementData);
   };
 
   const handleCreateAnnouncement = async (values) => {
-    await createAnnouncement(values);
+    await createAnnouncement(values, token);
     form.resetFields();
     fetchAnnouncementData();
   };
@@ -69,7 +77,7 @@ const TeacherPage = () => {
   };
 
   const handleAddStudent = async (values) => {
-    await addStudent(values,token);
+    await addStudent(values, token);
     setIsModalVisible(false);
   };
 
@@ -79,6 +87,10 @@ const TeacherPage = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const handleCancelModal = () => {
+    setModalVisible(false);
   };
 
   const columns = [
@@ -93,16 +105,32 @@ const TeacherPage = () => {
       key: "content",
     },
     {
+      title: "Tarih",
+      dataIndex: "date",
+      key: "date",
+      render: (text) => {
+        const dateParts = text.split("/");
+        const day = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10);
+        const year = parseInt(dateParts[2], 10);
+        const formattedDate = new Date(year, month - 1, day);
+
+        const formattedDateString = formattedDate.toLocaleDateString("tr-TR", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+        });
+
+        return formattedDateString;
+      },
+    },
+    {
       title: "Düzenle",
       key: "edit",
       render: (_, record) => (
         <Button
-          type="link"
-          onClick={() =>
-            handleEditAnnouncement(record.id, {
-              title: "Yeni Başlık",
-            })
-          }
+          style={{ background: "blue", color: "white" }}
+          onClick={() => handleOpenEditModal(record)}
         >
           Düzenle
         </Button>
@@ -112,7 +140,10 @@ const TeacherPage = () => {
       title: "Sil",
       key: "delete",
       render: (_, record) => (
-        <Button type="link" onClick={() => handleDeleteAnnouncement(record.id)}>
+        <Button
+          style={{ background: "red", color: "white" }}
+          onClick={() => handleDeleteAnnouncement(record._id)}
+        >
           Sil
         </Button>
       ),
@@ -209,6 +240,39 @@ const TeacherPage = () => {
               </Form>
             </Modal>
           </div>
+          <Modal
+            title="Duyuru Düzenle"
+            open={modalVisible}
+            onCancel={handleCancelModal}
+            footer={null}
+          >
+            <Form
+              form={new_form}
+              onFinish={(values) =>
+                handleEditAnnouncement(selectedAnnouncement._id, values)
+              }
+            >
+              <Form.Item
+                name="title"
+                label="Başlık"
+                rules={[{ required: true, message: "Başlık gereklidir" }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="content"
+                label="İçerik"
+                rules={[{ required: true, message: "İçerik gereklidir" }]}
+              >
+                <Input.TextArea />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Kaydet
+                </Button>
+              </Form.Item>
+            </Form>
+          </Modal>
           <div className="announcements">
             <h2>Duyurular</h2>
             <Form form={form} onFinish={handleCreateAnnouncement}>

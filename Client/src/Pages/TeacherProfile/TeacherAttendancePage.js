@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Input, message } from "antd";
+import { Table, Button, Modal, Input, message, DatePicker } from "antd";
 import axios from "axios";
 import "./StudentGradesPage.css";
 import { useSelector } from "react-redux";
@@ -8,11 +8,8 @@ import MenuPage from "../../Components/MenuPage";
 export default function TeacherAttendancePage() {
   const token = useSelector((state) => state.userInformation.token);
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [grade, setGrade] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const fetchStudents = async () => {
     try {
@@ -37,27 +34,23 @@ export default function TeacherAttendancePage() {
     fetchStudents();
   }, [searchQuery]);
 
-  const handleEditGrade = (student) => {
-    setSelectedStudent(student);
-    setSelectedCourse(student.course);
-    setGrade(student.grade);
-    setEditModalVisible(true);
-  };
-
-  const handleSaveGrade = async () => {
+  const handleAttendance = async (student) => {
     try {
-      await axios.put(
-        `http://localhost:3001/students/${selectedStudent.number}/grade`,
-        {
-          grade: grade,
-        }
+      if (!selectedDate) {
+        message.warning("Please select a date");
+        return;
+      }
+
+      const formattedDate = selectedDate.format("YYYY-MM-DD");
+      await axios.post(
+        `http://localhost:3001/ogretmen/yoklama_al/${student.studentNumber}`,
+        { date: formattedDate }
       );
-      message.success("Grade updated successfully");
-      setEditModalVisible(false);
+      message.success("Attendance taken successfully");
       fetchStudents();
     } catch (error) {
-      console.error("Error updating grade:", error);
-      message.error("An error occurred while updating the grade");
+      console.error("Error taking attendance:", error);
+      message.error("An error occurred while taking attendance");
     }
   };
 
@@ -73,9 +66,9 @@ export default function TeacherAttendancePage() {
       key: "studentNumber",
     },
     {
-      title: "Term",
-      dataIndex: "term",
-      key: "term",
+      title: "devamsizlikSayisi",
+      dataIndex: "devamsizlikSayisi",
+      key: "devamsizlikSayisi",
     },
     {
       title: "Grade",
@@ -86,9 +79,13 @@ export default function TeacherAttendancePage() {
       title: "Action",
       key: "action",
       render: (text, student) => (
-        <Button type="primary" onClick={() => handleEditGrade(student)}>
-          Edit Grade
-        </Button>
+        <div>
+          <DatePicker onChange={(date) => setSelectedDate(date)} />
+
+          <Button onClick={() => handleAttendance(student)}>
+            Take Attendance
+          </Button>
+        </div>
       ),
     },
   ];
@@ -110,21 +107,7 @@ export default function TeacherAttendancePage() {
       </div>
       <MenuPage />
       <Table dataSource={students} columns={columns} />
-
-      <Modal
-        title="Edit Grade"
-        open={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
-        onOk={handleSaveGrade}
-      >
-        <p>Course: {selectedCourse}</p>
-        <Input
-          type="number"
-          placeholder="Enter grade"
-          value={grade}
-          onChange={(e) => setGrade(e.target.value)}
-        />
-      </Modal>
+      <div></div>
     </div>
   );
 }
