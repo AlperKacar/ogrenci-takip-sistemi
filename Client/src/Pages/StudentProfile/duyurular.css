@@ -1,5 +1,7 @@
 .duyurular-container {
-    margin-top: 20px;
+    
+    max-height: 540px; /* İstediğiniz yüksekliği ayarlayın */
+    overflow-y: auto;
   }
   
   .duyurular-table {

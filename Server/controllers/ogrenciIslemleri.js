@@ -10,8 +10,13 @@ export const getSingleStudentDevamsizlik= async(req,res)=>{
     const ogrenciBul = await ogrenci.findById(req.user.id);
 
     const devamsizlikGunleri=await yoklama.find({ogr_num:ogrenciBul.studentNumber})
-
-    if (devamsizlikGunleri) return res.status(200).json(devamsizlikGunleri.tarih);
+    const tarihler = devamsizlikGunleri.map((obj) => obj.tarih);
+    
+    if (devamsizlikGunleri) return res.status(200).json({
+    tarihler:tarihler,
+    devamsizlikSayisi:ogrenciBul.devamsizlikSayisi
+    
+  });
   else return res.status(400).json({ message: "bir sorun oluştu." });
 
 }

@@ -3,6 +3,7 @@ import { Form, Input, Button, Table, Modal, Layout, Select } from "antd";
 import MenuPage from "../../Components/MenuPage";
 import "./TeacherPage.css";
 import { Helmet } from "react-helmet";
+
 import {
   fetchTeacherName,
   fetchAnnouncements,
@@ -29,6 +30,7 @@ const TeacherPage = () => {
     // Duyuruları API'den al
     fetchAnnouncementData();
   }, []);
+ 
   const gradeOptions = [
     { value: "1", label: "1. Sınıf" },
     { value: "2", label: "2. Sınıf" },

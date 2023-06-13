@@ -19,13 +19,14 @@ function StudentProfile() {
   const [sinavlar, setSinavlar] = useState([]);
   const [duyurular, setDuyurular] = useState([]);
  
-
+  useEffect(()=>{
+    devamsizliklariCek()
+  },[])
   useEffect(() => {
-    if(selected==="1")
-    {devamsizliklariCek()}
+    
     if(selected==="2")
    { notlar()}
-   if(selected==="2"){
+   if(selected==="3"){
     duyurulariCek()
   }
   
@@ -48,9 +49,10 @@ function StudentProfile() {
 
   const renderElement = (secili) => {
     if (secili === "1") {
-      return <Devamsizlik devamsizliklar={devamsizliklar}/>
+     
+      return <Devamsizlik devamsizlikSayisi={devamsizliklar.devamsizlikSayisi} tarihler={devamsizliklar.tarihler}/>
     } else if (secili === "2") {
-      return  <Notbilgisi mat1={sinavlar.matematik1} mat2={sinavlar.matematik2} hb1={sinavlar.hayatBilgisi1} hb2={sinavlar.hayatBilgisi2} f1={sinavlar.fenBilgisi1} f2={sinavlar.fenBilgisi2}/>
+      return  <Notbilgisi mat1={sinavlar.matematik1} mat2={sinavlar.matematik2} mat3={sinavlar.matematik3} hb1={sinavlar.hayatBilgisi1} hb2={sinavlar.hayatBilgisi2} f1={sinavlar.fenBilgisi1} f2={sinavlar.fenBilgisi2}/>
     } 
     else
       return <Duyurular duyurular={duyurular}/>

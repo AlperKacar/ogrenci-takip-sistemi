@@ -50,6 +50,7 @@ export default function StudentGradesPage() {
       const response = await axios.post(
         `http://localhost:3001/ogretmen/ogrenci_notu_gir/${selectedStudent._id}`,
         {
+          selectedCourse,
           selectedExam, // Hangi sınav olduğu gönderiliyor
           newGrade, // Sınav notu gönderiliyor
           attended, // Sınava girildi durumu gönderiliyor
@@ -75,7 +76,7 @@ export default function StudentGradesPage() {
 
   const courses = [
     {
-      courseName: "Matematik",
+      courseName: "matematik",
       exams: [
         { examName: "Sınav 1", key: "matematik1" },
         { examName: "Sınav 2", key: "matematik2" },
@@ -83,7 +84,7 @@ export default function StudentGradesPage() {
       ],
     },
     {
-      courseName: "HayatBilgisi",
+      courseName: "hayatBilgisi",
       exams: [
         { examName: "Sınav 1", key: "hayatBilgisi1" },
         { examName: "Sınav 2", key: "hayatBilgisi2" },
@@ -91,7 +92,7 @@ export default function StudentGradesPage() {
       ],
     },
     {
-      courseName: "FenBilgisi",
+      courseName: "fenBilgisi",
       exams: [
         { examName: "Sınav 1", key: "fenBilgisi1" },
         { examName: "Sınav 2", key: "fenBilgisi2" },
@@ -106,11 +107,21 @@ export default function StudentGradesPage() {
       dataIndex: "courseName",
       key: "courseName",
     },
-    ...courses[0].exams.map((exam) => ({
-      title: exam.examName,
-      dataIndex: exam.key,
-      key: exam.key,
-    })),
+    {
+      title: "Sınav 1",
+      dataIndex: "exam1",
+      key: "exam1",
+    },
+    {
+      title: "Sınav 2",
+      dataIndex: "exam2",
+      key: "exam2",
+    },
+    {
+      title: "Sınav 3",
+      dataIndex: "exam3",
+      key: "exam3",
+    },
     {
       title: "Notu Düzenle",
       dataIndex: "editGrade",
@@ -133,12 +144,17 @@ export default function StudentGradesPage() {
       courseName: course.courseName,
       editGrade: "",
     };
-    course.exams.forEach((exam) => {
-      courseItem[exam.key] = selectedStudent ? selectedStudent[exam.key] : "";
-    });
+  
+    const exam1Value = selectedStudent ? selectedStudent[`${course.courseName}1`] : "";
+    const exam2Value = selectedStudent ? selectedStudent[`${course.courseName}2`] : "";
+    const exam3Value = selectedStudent ? selectedStudent[`${course.courseName}3`] : "";
+  
+    courseItem.exam1 = exam1Value;
+    courseItem.exam2 = exam2Value;
+    courseItem.exam3 = exam3Value;
+  
     return courseItem;
   });
-
   const studentColumns = [
     {
       title: "İsim",

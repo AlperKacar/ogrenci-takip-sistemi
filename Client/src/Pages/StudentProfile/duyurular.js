@@ -1,6 +1,6 @@
 import React from 'react'
 import "./duyurular.css"
-function Duyurular(duyurular) {
+function Duyurular({duyurular}) {
   console.log(duyurular)
  
     return (
@@ -13,16 +13,18 @@ function Duyurular(duyurular) {
             <th>Duyuru</th>
           </tr>
         </thead>
+      
         <tbody>
           
-            
-     {/*    {duyurular.map((duyuru) => (
+           
+        {duyurular.map((duyuru) => (
             <tr key={duyuru._id}>
+              <td>{duyuru.teacher_adı}</td>
               <td>{duyuru.title}</td>
               <td>{duyuru.content}</td>
-              <td>{duyuru.teacher_adı}</td>
+              
             </tr>
-          ))} */}
+          ))}
          
         </tbody>
       </table>

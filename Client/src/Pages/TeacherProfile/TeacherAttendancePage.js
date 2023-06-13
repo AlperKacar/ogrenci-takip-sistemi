@@ -4,7 +4,7 @@ import axios from "axios";
 import "./StudentGradesPage.css";
 import { useSelector } from "react-redux";
 import MenuPage from "../../Components/MenuPage";
-
+import dayjs from "dayjs";
 export default function TeacherAttendancePage() {
   const token = useSelector((state) => state.userInformation.token);
   const [students, setStudents] = useState([]);
@@ -33,7 +33,9 @@ export default function TeacherAttendancePage() {
   useEffect(() => {
     fetchStudents();
   }, [searchQuery]);
-
+  const disableFutureDates = (current) => {
+    return current && current > dayjs().endOf("day");
+  };
   const handleAttendance = async (student) => {
     try {
       if (!selectedDate) {
@@ -41,16 +43,16 @@ export default function TeacherAttendancePage() {
         return;
       }
 
-      const formattedDate = selectedDate.format("YYYY-MM-DD");
+      
       await axios.post(
         `http://localhost:3001/ogretmen/yoklama_al/${student.studentNumber}`,
-        { date: formattedDate }
+        { date: selectedDate }
       );
-      message.success("Attendance taken successfully");
+      message.success("Yoklama Başarıyla Kaydedildi.");
       fetchStudents();
     } catch (error) {
       console.error("Error taking attendance:", error);
-      message.error("An error occurred while taking attendance");
+      message.error("Yoklama Girilirken Bir Hata Oluştu.");
     }
   };
 
@@ -80,7 +82,8 @@ export default function TeacherAttendancePage() {
       key: "action",
       render: (text, student) => (
         <div>
-          <DatePicker onChange={(date) => setSelectedDate(date)} />
+          <DatePicker disabledDate={disableFutureDates}
+          onChange={(date)=>{setSelectedDate(dayjs(date).format("DD/MM/YYYY"))}} />
 
           <Button onClick={() => handleAttendance(student)}>
             Take Attendance

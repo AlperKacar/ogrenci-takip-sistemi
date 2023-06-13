@@ -28,7 +28,7 @@ function Notbilgisi(props) {
                 <td >{props.mat1}</td>
                 <td >{props.mat2}</td>
                 <td >{props.mat3}</td>
-                <td >{calculateAverage(props.mat1,props.mat2,90)}</td>
+                <td >{calculateAverage(props.mat1,props.mat2,props.mat3)}</td>
               <td></td>
             </tr>
             <tr>
