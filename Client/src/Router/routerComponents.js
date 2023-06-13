@@ -21,10 +21,16 @@ const TeacherProfileEdit = lazy(() =>
 const TeacherProfileNote = lazy(() =>
   import("../Pages/TeacherProfile/StudentGradesPage")
 );
+//StudentPasswordController
+const RouterPrivateStudentController = lazy(() =>
+  import("./routerPrivateStudentController")
+);
+const StudentResetPassword = lazy(() =>
+  import("../Pages/StudentProfile/StudentResetPassword")
+);
 
 //StudentProfile
 const RouterPrivateStudent = lazy(() => import("./routerPrivateStudent"));
-
 const StudentProfile = lazy(() =>
   import("../Pages/StudentProfile/StudentProfile")
 );
@@ -51,6 +57,9 @@ export {
   RouterPrivateStudent,
   StudentProfile,
 
+  //StudentPasswordController
+  RouterPrivateStudentController,
+  StudentResetPassword,
   //notFound
   PageNotFound,
 };

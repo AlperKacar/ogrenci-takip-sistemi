@@ -22,6 +22,7 @@ const ogrSchema = mongoose.Schema({
   matematik3: { type: String },
   devamsizlikSayisi: { type: Number, default: 0 },
   tur: { type: String, default: "Ogrenci" },
+  isVerifiedPassword: { type: Boolean },
 });
 
 const ogrenci = mongoose.model("ogrenci", ogrSchema);

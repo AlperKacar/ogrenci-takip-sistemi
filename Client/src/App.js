@@ -7,7 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   const isLoggedIn = useSelector((state) => state.userInformation.isLoggedIn);
   if (isLoggedIn) {
-    return <LoadingTruck />;
+    setTimeout(() => {
+      return <LoadingTruck />;
+    }, 1000);
   }
 
   return (

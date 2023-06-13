@@ -1,10 +1,10 @@
 import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import { PageNotFound, StudentProfile } from "./routerComponents";
+import { PageNotFound, StudentResetPassword } from "./routerComponents";
 import LoadingTruck from "../Shared/commonComponents/loading/LoadingTruck";
-import RequireAuth from "../Shared/auth/RequireAuth";
-import RequireAuthStudent from "../Shared/auth/RequireAuthStudent";
+import RequireAuthController from "../Shared/auth/RequireAuthController";
 import LayoutPrivateStudent from "../Shared/layout/LayoutPrivateStudent";
+import MembershipAuth from "../Shared/auth/MembershipAuth";
 
 const RouterPrivate = () => {
   return (
@@ -12,14 +12,12 @@ const RouterPrivate = () => {
       <Routes>
         <Route
           element={
-            <RequireAuth>
-              <RequireAuthStudent>
-                <LayoutPrivateStudent />
-              </RequireAuthStudent>
-            </RequireAuth>
+            <RequireAuthController>
+              <LayoutPrivateStudent />
+            </RequireAuthController>
           }
         >
-          <Route path="/" element={<StudentProfile />} />
+          <Route path="/:token" element={<StudentResetPassword />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

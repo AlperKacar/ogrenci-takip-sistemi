@@ -7,6 +7,7 @@ import {
   PageNotFound,
   RouterPrivateTeacher,
   RouterPrivateStudent,
+  RouterPrivateStudentController,
 } from "./routerComponents";
 
 const Router = () => {
@@ -31,6 +32,10 @@ const Router = () => {
           }
         />
         <Route path="/*" element={<RouterMembership />} />
+        <Route
+          path="/password/*"
+          element={<RouterPrivateStudentController />}
+        />
         <Route
           path="/oibs/start/teacher/*"
           element={<RouterPrivateTeacher />}

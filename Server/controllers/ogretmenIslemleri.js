@@ -12,13 +12,13 @@ function formatDate(date) {
   const tarih = `${gun}/${ay + 1}/${yil}`;
   return tarih;
 }
-//Öğrencileri Listele
 export const ogrenciListele = async (req, res) => {
   try {
-    const teacher = await ogretmen.findById(req.user.id);
+    const teacherId = req.user.id; // Öğretmenin kimliği
+
     const { search } = req.query;
 
-    let query = {}; // Öğretmen kimliğine göre öğrencileri filtrelemek için sorgu
+    let query = { teacher_id: teacherId }; // Öğretmen kimliğine göre öğrencileri filtrelemek için sorgu
     if (search) {
       query.$or = [{ fullname: { $regex: search, $options: "i" } }];
 
@@ -27,15 +27,8 @@ export const ogrenciListele = async (req, res) => {
         query.$or.push({ studentNumber: searchNumber });
       }
     }
-    console.log(search);
     const Ogrenciler = await ogrenci.find(query);
-    if (Ogrenciler.length === 0) {
-      // Eğer öğrenci bulunamadıysa, tüm öğrencileri getir
-      const allStudents = await ogrenci.find({ teacher_id: teacher });
-      res.status(200).json({ Ogrenciler: allStudents });
-    } else {
-      res.status(200).json({ Ogrenciler });
-    }
+    res.status(200).json({ Ogrenciler });
   } catch (error) {
     res
       .status(500)
@@ -108,6 +101,7 @@ export const ogrenciEkle = async (req, res) => {
       teacher_id: teacher._id,
       grade,
       term,
+      isVerifiedPassword: false,
     });
     await newOgrenci.save();
     res.status(200).json({ message: "Kayıt İşlemi Başarıyla Tamamlandı." });

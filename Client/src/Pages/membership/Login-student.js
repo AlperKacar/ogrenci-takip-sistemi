@@ -40,9 +40,7 @@ const LoginStudent = () => {
           dispatch(setLogin(token));
           dispatch(setUser(user));
           toast.success(message);
-          navigate("/oibs/start/student", {
-            replace: true,
-          });
+          navigate(`/password/${token}`);
         } else {
           const { message } = response.data;
           toast.error(message);
