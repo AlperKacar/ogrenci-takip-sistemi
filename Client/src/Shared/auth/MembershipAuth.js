@@ -18,7 +18,7 @@ const MembershipAuth = memo(({ children }) => {
       />
     );
   }
-  if (isLoggedIn && user === "Öğrenci") {
+  if (isLoggedIn && user === "Ogrenci") {
     return (
       <Navigate
         to="/oibs/start/student"

@@ -6,15 +6,14 @@ import { setLogout } from "../store/userInformation";
 import "./HeaderAuth.css";
 import logo from "../images/dpu-logo4.png"
 import axios from "axios"
-export default function HeaderAuth(props) {
+export default function HeaderAuth() {
   const [name,setName]=useState("")
-  const tur=props.tur
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const { token } = useSelector((state) => state.userInformation);
+  const { token,user } = useSelector((state) => state.userInformation);
   
   
 
@@ -40,10 +39,10 @@ export default function HeaderAuth(props) {
     } catch (error) {}
   };
   
-  const renderElement = (tur) => {
-    if (tur === 'Ogrenci') {
+  const renderElement = (user) => {
+    if (user === 'Ogrenci') {
       return <h1 className="university-name">Öğrenci Bilgi Sistemi</h1>;
-    } else if (tur === 'Ogretmen') {
+    } else if (user === 'Ogretmen') {
       return  <h1 className="university-name">Öğretmen Yönetim Sistemi</h1>
     } 
   };
@@ -62,7 +61,7 @@ export default function HeaderAuth(props) {
         <div style={{ width: '200px', height: '50px' }}></div>
       )}
      
-        {renderElement(tur)}
+        {renderElement(user)}
         <span className="ogr-ad">Adı:{name}</span>
       <Link to="/" onClick={logoutHandle}>
         <Button className="cikis-button" danger type="primary">Çıkış Yap</Button>

@@ -65,7 +65,7 @@ function StudentProfile() {
   return (
     <div className='container'>
      
-    <HeaderAuth tur={"Ogrenci"}/>
+    <HeaderAuth/>
     
     
     <div className='yana-al'>
