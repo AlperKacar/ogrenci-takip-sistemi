@@ -3,7 +3,7 @@ import HeaderAuth from "../../Components/HeaderAuth";
 export default function LayoutPrivateTeacher() {
   return (
     <>
-     <HeaderAuth/>
+      <HeaderAuth />
       <Outlet />
     </>
   );

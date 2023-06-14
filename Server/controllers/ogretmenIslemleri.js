@@ -78,9 +78,9 @@ export const ogrenciEkle = async (req, res) => {
 
     const existingUser = await ogrenci.findOne({ tc: tc });
 
-    if (existingUser) {
+    if (existingUser)
       return res.status(400).json({ message: "Bu öğrenci zaten kayıtlıdır." });
-    }
+
     let ogr_controller;
     let new_number;
     do {
@@ -104,12 +104,13 @@ export const ogrenciEkle = async (req, res) => {
       isVerifiedPassword: false,
     });
     await newOgrenci.save();
-    res.status(200).json({ message: "Kayıt İşlemi Başarıyla Tamamlandı." });
+    res.status(200).json({
+      message: `Öğrencinin Şifresi ${new_number} Öğrenci başarıyla oluşturuldu.`,
+    });
   } catch (error) {
     res
-      .status(400)
+      .status(500)
       .json({ message: "Öğrenci kayıt edilirken bir sorunla karşılaşıldı." });
-    console.log(error.message);
   }
 };
 
@@ -153,7 +154,9 @@ export const resetStudentPassword = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Öğrencinin bilgileri güncellendi." });
+      .json({
+        message: `Öğrencinin şiresi: ${newPassword} başarıyla sıfırlandı.`,
+      });
   } catch (error) {
     return res
       .status(400)

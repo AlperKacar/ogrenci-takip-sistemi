@@ -1,16 +1,15 @@
-.main-div{
+.main-div {
   background-color: #3f475f;
   width: 100%;
 }
 .header {
-    
-    width: 1150px;
-    height: 75px;
-    display: flex;
-    align-items: center;
-    list-style: none;
-    justify-content: space-between;
-    margin: 0 auto;
+  width: 1150px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  justify-content: space-between;
+  margin: 0 auto;
 }
 
 .logo {
@@ -22,21 +21,20 @@
 
 .university-name {
   color: aliceblue;
- position: absolute;
- font-size: 18px;
- left: 850px;
- 
+  position: relative;
+  font-size: 18px;
+  left: 450px;
 }
 
-.ogr-ad{
+.ogr-ad {
   color: aliceblue;
   position: absolute;
   font-size: 14px;
   right: 189px;
   font-weight: 600;
 }
-.cikis-button{
-position: absolute;
-right: 50px;
-top: 23px;
+.cikis-button {
+  position: absolute;
+  right: 50px;
+  top: 23px;
 }

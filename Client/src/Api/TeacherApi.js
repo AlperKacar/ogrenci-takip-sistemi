@@ -12,7 +12,7 @@ export const fetchAnnouncements = async (token) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.message);
     return []; // Hata durumunda boş bir dizi döndür
   }
 };
@@ -30,11 +30,9 @@ export const createAnnouncement = async (values, token) => {
     );
     if (response.status === 200) {
       toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
     }
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.message);
   }
 };
 
@@ -46,11 +44,9 @@ export const editAnnouncement = async (id, values) => {
     );
     if (response.status === 200) {
       toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
     }
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.message);
   }
 };
 
@@ -61,11 +57,9 @@ export const deleteAnnouncement = async (id) => {
     );
     if (response.status === 200) {
       toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
     }
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.message);
   }
 };
 
@@ -76,16 +70,13 @@ export const addStudent = async (values, token) => {
       values,
       {
         headers: {
-          Authorization: ` Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
-    }
+
+    toast.success(response.data.message);
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.message);
   }
 };

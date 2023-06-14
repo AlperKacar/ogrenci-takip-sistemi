@@ -33,7 +33,7 @@ const RequireAuthController = memo(({ children }) => {
   if (controller === true) {
     return (
       <Navigate
-        to={location.pathname}
+        to="/oibs/start/student"
         replace={true}
         state={{
           return_url: location.pathname,

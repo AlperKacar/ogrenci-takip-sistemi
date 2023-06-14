@@ -10,6 +10,7 @@ export default function TeacherAttendancePage() {
   const [students, setStudents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchStudents = async () => {
     try {
@@ -24,6 +25,7 @@ export default function TeacherAttendancePage() {
           },
         }
       );
+      setLoading(true);
       setStudents(response.data.Ogrenciler);
     } catch (error) {
       console.error("Öğrenciler alınırken hata oluştu:", error);
@@ -43,7 +45,6 @@ export default function TeacherAttendancePage() {
         return;
       }
 
-     
       await axios.post(
         `http://localhost:3001/ogretmen/yoklama_al/${student.studentNumber}`,
         { date: selectedDate }
@@ -82,8 +83,12 @@ export default function TeacherAttendancePage() {
       key: "action",
       render: (text, student) => (
         <div>
-           <DatePicker disabledDate={disableFutureDates}
-          onChange={(date)=>{setSelectedDate(dayjs(date).format("DD/MM/YYYY"))}} />
+          <DatePicker
+            disabledDate={disableFutureDates}
+            onChange={(date) => {
+              setSelectedDate(dayjs(date).format("DD/MM/YYYY"));
+            }}
+          />
 
           <Button onClick={() => handleAttendance(student)}>
             Take Attendance
@@ -92,17 +97,30 @@ export default function TeacherAttendancePage() {
       ),
     },
   ];
-
+  if (!loading) {
+    return <div>Yükleniyor</div>;
+  }
   return (
     <div className="student-grades-page">
       <MenuPage />
-      <Input
-        type="text"
-        placeholder="Öğrenci ara"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <Table dataSource={students} columns={columns} />
+      <div className="table-colum">
+        <div className="search-bar">
+          <Input
+            type="text"
+            placeholder="Öğrenci ara"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <Table
+          dataSource={students}
+          columns={columns}
+          pagination={{
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10"],
+          }}
+        />
+      </div>
     </div>
   );
 }

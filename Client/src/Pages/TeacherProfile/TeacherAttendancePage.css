@@ -1,18 +1,41 @@
-.teacher-attendance-page {
+.student-grades-page {
   display: flex;
-  flex-direction: row;
+}
+.table-colum {
+  margin-top: 20px;
+  margin-left: 150px;
+}
+.ant-table {
+  width: 1000px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.attendance-content {
-  margin: 20px;
+.ant-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-h1 {
-  font-size: 24px;
-  font-weight: bold;
+.ant-input-number {
+  width: 100%;
+}
+
+.search-bar {
   margin-bottom: 20px;
 }
 
-.attendance-table {
-  margin: 20px;
+.ant-table-pagination {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.modal-input {
+  margin-bottom: 10px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
 }

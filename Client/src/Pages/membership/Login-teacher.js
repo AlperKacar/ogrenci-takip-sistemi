@@ -43,6 +43,7 @@ const LoginTeacher = () => {
           navigate("/oibs/start/teacher", {
             replace: true,
           });
+          window.location.reload();
         } else {
           const { message } = response.data;
           toast.error(message);

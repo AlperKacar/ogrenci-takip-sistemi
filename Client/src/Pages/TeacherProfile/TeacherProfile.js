@@ -22,6 +22,7 @@ const TeacherPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [loading, setloading] = useState(false);
   useEffect(() => {
     // Duyuruları API'den al
     fetchAnnouncementData();
@@ -50,6 +51,7 @@ const TeacherPage = () => {
 
   const fetchAnnouncementData = async () => {
     const announcementData = await fetchAnnouncements(token);
+    setloading(true);
     setAnnouncements(announcementData);
   };
 
@@ -143,6 +145,10 @@ const TeacherPage = () => {
     },
   ];
 
+  if (!loading) {
+    return <div>Yükleniyor</div>;
+  }
+
   return (
     <Layout>
       <Helmet>
@@ -151,7 +157,9 @@ const TeacherPage = () => {
       <div className="body-display">
         <MenuPage />
         <Content className="teacher-page">
-          <div className="add-student-button">
+          <div className="announcements-div">
+            <h2>Yeni Bir Öğrenci Ekle</h2>
+
             <Button type="primary" onClick={showModal}>
               Öğrenci Ekle
             </Button>
@@ -258,8 +266,13 @@ const TeacherPage = () => {
             </Form>
           </Modal>
           <div className="announcements">
-            <h2>Duyurular</h2>
-            <Form form={form} onFinish={handleCreateAnnouncement}>
+            <Form
+              form={form}
+              className="announcements-div"
+              onFinish={handleCreateAnnouncement}
+            >
+              <h2>Duyuru Oluştur</h2>
+
               <Form.Item
                 name="title"
                 label="Başlık"
@@ -280,6 +293,8 @@ const TeacherPage = () => {
                 </Button>
               </Form.Item>
             </Form>
+            <h2>Duyurular</h2>
+
             <Table
               dataSource={announcements}
               columns={columns}

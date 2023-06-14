@@ -32,7 +32,7 @@ function StudentResetPassword() {
       );
 
       // Şifre sıfırlama işlemi başarılı olduğunda yapılması gereken işlemleri buraya ekleyebilirsiniz
-
+      window.location.reload();
       navigate("/oibs/start/student", {
         replace: true,
       });

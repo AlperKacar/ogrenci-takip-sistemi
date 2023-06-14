@@ -13,6 +13,7 @@ import axios from "axios";
 import "./StudentGradesPage.css";
 import { useSelector } from "react-redux";
 import MenuPage from "../../Components/MenuPage";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -23,6 +24,7 @@ export default function TeacherStudentsPage() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editedStudent, setEditedStudent] = useState({});
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
 
   const fetchStudents = async () => {
     try {
@@ -37,6 +39,7 @@ export default function TeacherStudentsPage() {
           },
         }
       );
+      setLoading(true);
       setStudents(response.data.Ogrenciler);
     } catch (error) {
       console.error("Öğrenciler alınırken hata oluştu:", error);
@@ -49,10 +52,10 @@ export default function TeacherStudentsPage() {
 
   const handleResetPassword = async (student) => {
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:3001/ogretmen/resetPassword/${student._id}`
       );
-      message.success("Student password reset successfully");
+      toast.success(response.data.message);
       fetchStudents();
     } catch (error) {
       console.error("Error resetting student password:", error);
@@ -150,6 +153,13 @@ export default function TeacherStudentsPage() {
       key: "action",
       render: (text, student) => (
         <>
+          <Button
+            type="primary"
+            style={{ background: "green", color: "white" }}
+            onClick={() => handleOpenEditModal(student)}
+          >
+            Edit Student
+          </Button>
           <Button type="primary" onClick={() => handleResetPassword(student)}>
             Reset Password
           </Button>
@@ -163,25 +173,36 @@ export default function TeacherStudentsPage() {
               Delete Student
             </Button>
           </Popconfirm>
-          <Button type="primary" onClick={() => handleOpenEditModal(student)}>
-            Edit Student
-          </Button>
         </>
       ),
     },
   ];
 
+  if (!loading) {
+    return <div>Yükleniyor</div>;
+  }
+
   return (
     <div className="student-grades-page">
       <MenuPage />
-      <Input
-        type="text"
-        placeholder="Öğrenci ara"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <Table dataSource={students} columns={columns} />
-
+      <div className="table-colum">
+        <div className="search-bar">
+          <Input
+            type="text"
+            placeholder="Öğrenci ara"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <Table
+          dataSource={students}
+          columns={columns}
+          pagination={{
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10"],
+          }}
+        />
+      </div>
       <Modal
         title="Edit Student Information"
         open={editModalVisible}

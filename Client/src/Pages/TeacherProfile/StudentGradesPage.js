@@ -16,6 +16,7 @@ export default function StudentGradesPage() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [courseTableVisible, setCourseTableVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [attended, setAttended] = useState(true);
 
   const fetchStudents = async () => {
@@ -31,6 +32,7 @@ export default function StudentGradesPage() {
           },
         }
       );
+      setLoading(true);
       setStudents(response.data.Ogrenciler);
     } catch (error) {
       console.error("Öğrenciler alınırken hata oluştu:", error);
@@ -183,17 +185,34 @@ export default function StudentGradesPage() {
       ),
     },
   ];
-
+  if (!loading) {
+    return <div>Yükleniyor</div>;
+  }
   return (
-    <div>
+    <div className="student-grades-page">
       <MenuPage />
-      <Input
-        type="text"
-        placeholder="Öğrenci ara"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <Table dataSource={students} columns={studentColumns} />
+      <div className="table-colum">
+        <div className="search-bar">
+          <Input
+            type="text"
+            placeholder="Öğrenci ara"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        <Table
+          dataSource={students}
+          columns={studentColumns}
+          pagination={{
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10"],
+          }}
+        />
+        {courseTableVisible && (
+          <Table dataSource={courseData} columns={courseColumns} />
+        )}
+      </div>
 
       {/* Not düzenleme modalı */}
       <Modal
@@ -229,10 +248,6 @@ export default function StudentGradesPage() {
           <Radio value={false}>Girmedi</Radio>
         </Radio.Group>
       </Modal>
-
-      {courseTableVisible && (
-        <Table dataSource={courseData} columns={courseColumns} />
-      )}
     </div>
   );
 }

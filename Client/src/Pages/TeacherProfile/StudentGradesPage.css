@@ -1,14 +1,12 @@
 .student-grades-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  display: flex;
 }
-
-.search-bar {
-  margin-bottom: 20px;
+.table-colum {
+  margin-top: 20px;
+  margin-left: 150px;
 }
-
 .ant-table {
+  width: 1000px;
   background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -24,33 +22,8 @@
   width: 100%;
 }
 
-
-.student-grades-page {
-  margin: 20px;
-}
-
 .search-bar {
   margin-bottom: 20px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #f0f0f0;
-}
-
-.left-section {
-  margin-right: 10px;
-}
-
-.right-section {
-  font-weight: bold;
-}
-
-.teacher-name {
-  color: #333;
 }
 
 .ant-table-pagination {

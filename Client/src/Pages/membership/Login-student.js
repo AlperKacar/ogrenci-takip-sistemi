@@ -3,7 +3,7 @@ import axios from "axios";
 import { Input, Button, Form } from "antd";
 import { useDispatch } from "react-redux";
 import { setLogin, setUser } from "../../store/userInformation";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 
