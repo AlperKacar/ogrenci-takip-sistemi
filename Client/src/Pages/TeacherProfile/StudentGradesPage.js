@@ -74,6 +74,12 @@ export default function StudentGradesPage() {
   const handleViewCourses = (student) => {
     setSelectedStudent(student);
     setCourseTableVisible(true);
+
+    // Ekranı en alta kaydır
+    const tableContainer = document.getElementById("course-table-container");
+    if (tableContainer) {
+      tableContainer.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const courses = [
@@ -210,7 +216,9 @@ export default function StudentGradesPage() {
           }}
         />
         {courseTableVisible && (
-          <Table dataSource={courseData} columns={courseColumns} />
+          <div id="course-table-container">
+            <Table dataSource={courseData} columns={courseColumns} />
+          </div>
         )}
       </div>
 
