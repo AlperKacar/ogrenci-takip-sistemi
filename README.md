@@ -1,6 +1,6 @@
 # Ogrenci-Takip-Sistemi
 
-Dağıtık Sistemler Ödevi Kapsamında Hazırlanan Proje
+Dağıtık Sistemler Final Projesi 
 
 Ertan Eracar
 Alper Kacar
